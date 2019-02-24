@@ -125,7 +125,7 @@
 		}
 
 		public function enqueue_js() {
-			wp_register_script( 'gazchaps_getaddress_io_plugin', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.js', array(), '1.0.0', true );
+			wp_register_script( 'gazchaps_getaddress_io_plugin', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array(), '1.0.0', true );
 			wp_enqueue_script( 'gazchaps_getaddress_io_plugin' );
 
 			wp_localize_script( 'gazchaps_getaddress_io_plugin', 'gazchaps_getaddress_io_plugin', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
