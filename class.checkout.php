@@ -14,7 +14,7 @@
 		}
 
 		public function do_postcode_lookup() {
-			$return_message = '';
+			$output = array();
 
 			if ( !empty( $_POST['postcode'] ) ) {
 				// sanitize postcode
@@ -60,37 +60,54 @@
 								'address_type' => $address_type,
 								'fragment' => $fragment,
 							);
-							echo json_encode( $output );
 							break;
 
 						case 400:
-							$return_message = __('The postcode supplied is invalid', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							$output = array(
+								'error' =>__('The postcode supplied is invalid', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error_code' => $result['response']['code'],
+							);
 							break;
 
 						case 401:
-							$return_message = __('Your getAddress.io API key is invalid', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							$output = array(
+								'error' =>__('The lookup API key is invalid.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error_code' => $result['response']['code'],
+							);
 							break;
 
 						case 404:
-							$return_message = __('No addresses found for this postcode', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							$output = array(
+								'error' =>__('No addresses were found for this postcode.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error_code' => $result['response']['code'],
+							);
 							break;
 
 						case 429:
-							$return_message = __('You have made more requests than your allowed limit', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							$output = array(
+								'error' =>__('Lookup failed due to overuse.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error_code' => $result['response']['code'],
+							);
+
+							$this->send_overusage_email();
 							break;
 
 						case 500:
-							$return_message = __('Server error. Please try again later.', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							$output = array(
+								'error' =>__('Server error. Please try again later.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error_code' => $result['response']['code'],
+							);
 							break;
 					}
-					wp_die( $return_message );
-				} else {
-					$return_message = __('No postcode supplied', 'gazchaps-woocommerce-getaddress-io-plugin' );
 				}
-			} else {
-				$return_message = __('No postcode supplied', 'gazchaps-woocommerce-getaddress-io-plugin' );
 			}
-			wp_die( $return_message );
+			if ( empty( $output ) ) {
+				$output = array(
+					'error' =>__('No postcode was supplied.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+					'error_code' => 400,
+				);
+			}
+			wp_die( json_encode( $output ) );
 		}
 
 		public function get_address_selector_html( $addresses, $address_type ) {
@@ -112,6 +129,30 @@
 			wp_enqueue_script( 'gazchaps_getaddress_io_plugin' );
 
 			wp_localize_script( 'gazchaps_getaddress_io_plugin', 'gazchaps_getaddress_io_plugin', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		}
+
+		public function send_overusage_email() {
+			$recipient = get_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit' );
+			if ( !empty( $recipient ) ) {
+				if ( '{admin_email}' == strtolower( $recipient ) ) {
+					$recipient = get_bloginfo('admin_email');
+				}
+
+				if ( !empty( $recipient ) ) {
+					$last_email_sent = get_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit_lastsent' );
+
+					if ( !$last_email_sent || $last_email_sent < strtotime("-24 hours") ) {
+						$subject = __( "getAddress.io API Usage Limit Reached", 'gazchaps-woocommerce-getaddress-io-plugin' );
+						$message = "";
+						$message .= sprintf( __( "Sent from: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), home_url() ) . "\r\n";
+						$message .= sprintf( __( "getAddress.io API Key: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), get_option( 'gazchaps_getaddress_io_api_key' ) ) . "\r\n";
+						$message .= sprintf( __( "Date/Time: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), current_time( 'mysql' ) ) . "\r\n";
+
+						wp_mail( $recipient, $subject, $message );
+						update_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit_lastsent', time() );
+					}
+				}
+			}
 		}
 
 		public function init_checkout_fields() {
