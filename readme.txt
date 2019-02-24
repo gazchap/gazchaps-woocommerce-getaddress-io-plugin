@@ -28,7 +28,7 @@ Install via the WordPress Plugin Directory, or download a release from this repo
 
 == Usage ==
 
-Once installed and activated, you need to go to the Appearance -> Customize -> WooCommerce -> Checkout section in the WordPress dashboard. You can enter your API key and set your other options here.
+Once installed and activated, you need to go to the WooCommerce -> Settings -> General page in the WordPress dashboard. You can enter your API key and set your other options here.
 
 == Changelog ==
 = 1.0 (24/02/2019) =

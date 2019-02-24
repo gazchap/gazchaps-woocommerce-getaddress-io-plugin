@@ -28,6 +28,8 @@
 			add_action( 'plugins_loaded', array( $this, 'load_class' ), 15 );
 
 			add_action( 'admin_init', array( $this, 'init_plugin' ) );
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_link' ) );
+			//
 		}
 
 		function load_class() {
@@ -55,6 +57,14 @@
 		    ?>
 		    <div class="notice notice-error"><p><?php esc_html_e( 'This plugin requires WooCommerce to be installed and activated.', 'gazchaps-woocommerce-getaddress-io-plugin' ) ?></p></div>
 		    <?php
+		}
+
+		function add_settings_link( $links ) {
+			if ( !is_array( $links ) ) {
+				$links = array();
+			}
+			$links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=general' ) . '#gazchaps_getaddress_io_section_title-description">' . __( 'Settings', 'gazchaps-woocommerce-getaddress-io-plugin' ) . '</a>';
+			return $links;
 		}
 
 	}
