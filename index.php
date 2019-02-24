@@ -1,11 +1,11 @@
 <?php
 	/*
-		Plugin Name: GazChap's WooCommerce getAddress.io Plugin
-		Plugin URI: https://www.gazchap.com/posts/woocommerce-getaddress-io-plugin
+		Plugin Name: GazChap's WooCommerce getAddress.io Postcode Lookup
+		Plugin URI: https://www.gazchap.com/posts/woocommerce-getaddress-io
 		Description: Adds a UK postcode address lookup tool to the WooCommerce checkout process.
 		Author: Gareth 'GazChap' Griffiths
 		Author URI: https://www.gazchap.com
-		Text Domain: gazchaps-woocommerce-getaddress-io-plugin
+		Text Domain: gazchaps-woocommerce-getaddress-io
 		Domain Path: /lang
 		Version: 1.0
 		WooCommerce requires at least version: 3.0.0
@@ -37,7 +37,7 @@
 		}
 
 		function load_languages() {
-			load_plugin_textdomain( 'gazchaps-woocommerce-getaddress-io-plugin', false, GC_WC_GAIO_DIR . 'lang' . DIRECTORY_SEPARATOR );
+			load_plugin_textdomain( 'gazchaps-woocommerce-getaddress-io', false, GC_WC_GAIO_DIR . 'lang' . DIRECTORY_SEPARATOR );
 		}
 
 		/**
@@ -54,7 +54,7 @@
 
 		function woocommerce_deactivated_notice() {
 		    ?>
-		    <div class="notice notice-error"><p><?php esc_html_e( 'GazChap\'s WooCommerce getAddress.io Plugin requires WooCommerce to be installed and activated.', 'gazchaps-woocommerce-getaddress-io-plugin' ) ?></p></div>
+		    <div class="notice notice-error"><p><?php esc_html_e( 'GazChap\'s WooCommerce getAddress.io Postcode Lookup requires WooCommerce to be installed and activated.', 'gazchaps-woocommerce-getaddress-io' ) ?></p></div>
 		    <?php
 		}
 
@@ -62,7 +62,7 @@
 			if ( !is_array( $links ) ) {
 				$links = array();
 			}
-			$links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=general' ) . '#gazchaps_getaddress_io_section_title-description">' . __( 'Settings', 'gazchaps-woocommerce-getaddress-io-plugin' ) . '</a>';
+			$links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=general' ) . '#gazchaps_getaddress_io_section_title-description">' . __( 'Settings', 'gazchaps-woocommerce-getaddress-io' ) . '</a>';
 			return $links;
 		}
 

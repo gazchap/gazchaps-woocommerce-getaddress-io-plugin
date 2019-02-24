@@ -1,4 +1,4 @@
-=== GazChap's WooCommerce getAddress.io Plugin ===
+=== GazChap's WooCommerce getAddress.io Postcode Lookup ===
 Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Tested up to: 5.1
@@ -40,25 +40,25 @@ For developers, I've included a few filters that you can use to customise certai
 
 All of these filters take one argument, `$message`, the error message that will be displayed to the user.
 
-`gazchaps-woocommerce-getaddress-io-plugin_api_error_400` - shown when the postcode supplied is invalid/empty
-`gazchaps-woocommerce-getaddress-io-plugin_api_error_401` - shown when the API key provided in the settings is invalid
-`gazchaps-woocommerce-getaddress-io-plugin_api_error_404` - shown when no addresses were found for the supplied postcode
-`gazchaps-woocommerce-getaddress-io-plugin_api_error_429` - shown when the API key has hit its usage limit
-`gazchaps-woocommerce-getaddress-io-plugin_api_error_500` - shown when there is a server error at getAddress.io
+`gazchaps-woocommerce-getaddress-io_api_error_400` - shown when the postcode supplied is invalid/empty
+`gazchaps-woocommerce-getaddress-io_api_error_401` - shown when the API key provided in the settings is invalid
+`gazchaps-woocommerce-getaddress-io_api_error_404` - shown when no addresses were found for the supplied postcode
+`gazchaps-woocommerce-getaddress-io_api_error_429` - shown when the API key has hit its usage limit
+`gazchaps-woocommerce-getaddress-io_api_error_500` - shown when there is a server error at getAddress.io
 
 Note: By default, the error messages are "customer friendly", i.e. they don't go into much detail about the cause of the error!
 
 = Styling =
 
-`gazchaps-woocommerce-getaddress-io-plugin_billing_selector_row_class` - changes the CSS class on the form-row that the billing address selector is placed into
-`gazchaps-woocommerce-getaddress-io-plugin_shipping_selector_row_class` - changes the CSS class on the form-row that the shipping address selector is placed into
-`gazchaps-woocommerce-getaddress-io-plugin_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
+`gazchaps-woocommerce-getaddress-io_billing_selector_row_class` - changes the CSS class on the form-row that the billing address selector is placed into
+`gazchaps-woocommerce-getaddress-io_shipping_selector_row_class` - changes the CSS class on the form-row that the shipping address selector is placed into
+`gazchaps-woocommerce-getaddress-io_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
 
 = Over Usage Email Notification =
 
-`gazchaps-woocommerce-getaddress-io-plugin_overusage_email_recipient` - change the recipient passed to wp_mail()
-`gazchaps-woocommerce-getaddress-io-plugin_overusage_email_subject` - change the subject line passed to wp_mail() for the over-usage email
-`gazchaps-woocommerce-getaddress-io-plugin_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
+`gazchaps-woocommerce-getaddress-io_overusage_email_recipient` - change the recipient passed to wp_mail()
+`gazchaps-woocommerce-getaddress-io_overusage_email_subject` - change the subject line passed to wp_mail() for the over-usage email
+`gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
 = 1.0 (24/02/2019) =
