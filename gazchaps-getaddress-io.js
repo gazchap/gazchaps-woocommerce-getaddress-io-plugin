@@ -92,4 +92,14 @@
         }
     } );
 
+    // if we're on the WC checkout, add a clearfix to the additional fields wrappter
+    if ( gazchaps_getaddress_io_plugin.clear_additional_fields ) {
+        var additional_fields_wrappers = document.getElementsByClassName('woocommerce-additional-fields__field-wrapper');
+        if ( additional_fields_wrappers.length > 0 ) {
+            for(var i = 0; i < additional_fields_wrappers.length; i++) {
+                additional_fields_wrappers[i].style.clear = 'both';
+            }
+        }
+    }
+
 })(jQuery);

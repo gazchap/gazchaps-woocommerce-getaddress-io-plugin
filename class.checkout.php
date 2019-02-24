@@ -115,11 +115,8 @@
 
 		public function get_address_selector_html( $addresses, $address_type ) {
 			$p_id = $address_type . '_gazchaps-woocommerce-getaddress-io-address-selector';
-			$p_id = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_row_id', $p_id );
 			$p_class = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_row_class', 'form-row form-row-wide' );
-
 			$select_id = $address_type . '_gazchaps-woocommerce-getaddress-io-address-selector-select';
-			$select_id = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_select_id', $select_id );
 
 			$html = '<p class="' . esc_attr( $p_class ) . '" id="' . esc_attr( $p_id ) . '">';
 			$html.= '<label for="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector-select">' . __( 'Select Address', 'gazchaps-woocommerce-getaddress-io-plugin' ) . '</label>';
@@ -135,10 +132,14 @@
 		}
 
 		public function enqueue_js() {
-			wp_register_script( 'gazchaps_getaddress_io_plugin', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array(), '1.0.0', true );
+			wp_register_script( 'gazchaps_getaddress_io_plugin', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), '1.0.0', true );
 			wp_enqueue_script( 'gazchaps_getaddress_io_plugin' );
 
-			wp_localize_script( 'gazchaps_getaddress_io_plugin', 'gazchaps_getaddress_io_plugin', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+			$options = array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'clear_additional_fields' => apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_clear_additional_fields', true ),
+			);
+			wp_localize_script( 'gazchaps_getaddress_io_plugin', 'gazchaps_getaddress_io_plugin', $options );
 		}
 
 		public function send_overusage_email() {
