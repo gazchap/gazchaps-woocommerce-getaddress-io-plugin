@@ -6,8 +6,112 @@
 	class GazChap_WC_GetAddress_Plugin {
 
 		public function __construct() {
-			$this->init_settings();
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js' ) );
 			$this->init_checkout_fields();
+
+			add_action( 'wp_ajax_gazchaps_woocommerce_getaddress_io_plugin', array( $this, 'do_postcode_lookup' ) );
+			add_action( 'wp_ajax_nopriv_gazchaps_woocommerce_getaddress_io_plugin', array( $this, 'do_postcode_lookup' ) );
+		}
+
+		public function do_postcode_lookup() {
+			$return_message = '';
+
+			if ( !empty( $_POST['postcode'] ) ) {
+				// sanitize postcode
+				$postcode = strtoupper( preg_replace("/[^A-Z0-9]/i", "", $_POST['postcode'] ) );
+
+				if ( !empty( $postcode ) ) {
+					$url = "https://api.getaddress.io/find/" . rawurlencode( $postcode ) . "?sort=true&expand=true";
+					$auth = base64_encode( "api-key:" . get_option( 'gazchaps_getaddress_io_api_key' ) );
+
+					$args = array(
+						'headers' => array(
+							'Authorization' => 'Basic ' . $auth
+						)
+					);
+					$result = wp_remote_request( $url, $args );
+
+					switch( intval( $result['response']['code'] ) ) {
+						case 200:
+							$address_type = 'billing';
+							if ( 'shipping' == $_POST['address_type'] ) $address_type = 'shipping';
+							$addresses = array();
+							$array = json_decode( $result['body'] );
+							foreach( $array->addresses as $address ) {
+								if ( empty( $address->line_2 ) && !empty( $address->locality ) ) {
+									$address->line_2 = $address->locality;
+								}
+								$this_address = array();
+								$address_lines = array(
+									$address_type . '_address_1' => $address->line_1,
+									$address_type . '_address_2' => $address->line_2,
+									$address_type . '_city' => $address->town_or_city,
+									$address_type . '_state' => $address->county,
+								);
+								$this_address['option'] = implode( "|", array_values( $address_lines ) );
+								$this_address['label'] = str_replace("|", ", ", preg_replace( "/\|+/", "|", $this_address['option'] ) );
+
+								$addresses[] = $this_address;
+							}
+
+							$fragment = $this->get_address_selector_html( $addresses, $address_type );
+							$output = array(
+								'address_count' => count( $addresses ),
+								'address_type' => $address_type,
+								'fragment' => $fragment,
+							);
+							echo json_encode( $output );
+							break;
+
+						case 400:
+							$return_message = __('The postcode supplied is invalid', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							break;
+
+						case 401:
+							$return_message = __('Your getAddress.io API key is invalid', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							break;
+
+						case 404:
+							$return_message = __('No addresses found for this postcode', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							break;
+
+						case 429:
+							$return_message = __('You have made more requests than your allowed limit', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							break;
+
+						case 500:
+							$return_message = __('Server error. Please try again later.', 'gazchaps-woocommerce-getaddress-io-plugin' );
+							break;
+					}
+					wp_die( $return_message );
+				} else {
+					$return_message = __('No postcode supplied', 'gazchaps-woocommerce-getaddress-io-plugin' );
+				}
+			} else {
+				$return_message = __('No postcode supplied', 'gazchaps-woocommerce-getaddress-io-plugin' );
+			}
+			wp_die( $return_message );
+		}
+
+		public function get_address_selector_html( $addresses, $address_type ) {
+			$html = '<p class="form-row form-row-wide" id="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector">';
+			$html.= '<label for="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector-select">' . __( 'Select Address', 'gazchaps-woocommerce-getaddress-io-plugin' ) . '</label>';
+			$html.= '<span class="woocommerce-input-wrapper"><select id="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector-select">';
+			$html.= '<option value="">' . esc_html( sprintf( _n( '%s address found', '%s addresses found', count( $addresses ), 'gazchaps-woocommerce-getaddress-io-plugin' ), number_format_i18n( count( $addresses ) ) ) ) . '</option>';
+
+			foreach( $addresses as $address ) {
+				$html.= '<option value="' . esc_attr( $address['option'] ) . '">' . esc_html( $address['label'] ) . '</option>';
+			}
+			$html.= '</select></span>';
+			$html.= '</p>';
+			return $html;
+		}
+
+		public function enqueue_js() {
+			wp_register_script( 'gazchaps_getaddress_io_plugin', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.js', array(), '1.0.0', true );
+			wp_enqueue_script( 'gazchaps_getaddress_io_plugin' );
+
+			wp_localize_script( 'gazchaps_getaddress_io_plugin', 'gazchaps_getaddress_io_plugin', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
 
 		public function init_checkout_fields() {
@@ -101,67 +205,15 @@
 			$class = ( !empty( $args['class'] ) ) ? esc_attr( implode( ' ', $args['class'] ) ) : '';
 			$id    = ( !empty( $args['id'] ) ) ? esc_attr( $args['id'] ) . '_field' : '';
 
+			// note: this render code is in a <script> tag so that it does not appear if JS is disabled for any reason
 			ob_start();
 			?>
-			<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>">
-				<br>
-				<button type="button" class="button alt" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button>
-			</p>
+			<script>
+				document.write( '<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>"><br>' );
+				document.write( '<button type="button" class="button alt gazchaps-getaddress-io-lookup-button" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button></p>' );
+			</script>
 			<?php
 			return ob_get_clean();
-		}
-
-		public function init_settings() {
-			add_filter( 'woocommerce_get_settings_general', array( $this, 'add_settings_to_section' ), 10, 1 );
-		}
-
-		public function add_settings_to_section( $settings ) {
-			$new_settings = array();
-
-			$new_settings[] = array(
-				'id'       => 'gazchaps_getaddress_io_section_title',
-				'title' => __( 'getAddress.io Settings', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'desc' => __( 'Settings required for GazChap\'s WooCommerce getAddress.io Plugin. Get your API key from https://getaddress.io', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'type'     => 'title',
-			);
-
-			$new_settings[] = array(
-				'id'       => 'gazchaps_getaddress_io_enabled',
-				'title'     => __( 'Enabled', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'desc' => __( 'Activate the integration (requires an API key to be entered below)', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'type'     => 'checkbox',
-			);
-
-			$new_settings[] = array(
-				'id'        => 'gazchaps_getaddress_io_api_key',
-				'title'      => __( 'API Key', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'type'      => 'text',
-			);
-
-			$new_settings[] = array(
-				'id'        => 'gazchaps_getaddress_io_enable_for_billing_address',
-				'title'      => __( 'Enable for Billing Address', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'desc'      => __( 'Add the lookup field to the Billing Address section in the checkout', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'default'   => 'yes',
-				'type'      => 'checkbox',
-			);
-
-			$new_settings[] = array(
-				'id'        => 'gazchaps_getaddress_io_enable_for_shipping_address',
-				'title'      => __( 'Enable for Shipping Address', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'desc'      => __( 'Add the lookup field to the shipping Address section in the checkout', 'gazchaps-woocommerce-getaddress-io-plugin' ),
-				'default'   => 'yes',
-				'type'      => 'checkbox',
-			);
-
-			$new_settings[] = array(
-				'id'        => 'gazchap_getaddress_io_options',
-				'type'      => 'sectionend',
-			);
-
-			$settings = array_merge( $settings, $new_settings );
-
-			return $settings;
 		}
 
 	}

@@ -19,6 +19,7 @@
 	}
 
 	define('GC_WC_GAIO_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR );
+	define('GC_WC_GAIO_URL', plugin_dir_url( __FILE__ ) );
 
 	class GC_WC_GAIO {
 
@@ -30,6 +31,7 @@
 		}
 
 		function load_class() {
+			require GC_WC_GAIO_DIR . 'class.settings.php';
 			require GC_WC_GAIO_DIR . 'class.checkout.php';
 		}
 
