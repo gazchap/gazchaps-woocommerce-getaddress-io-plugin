@@ -107,13 +107,23 @@
 					'error_code' => 400,
 				);
 			}
+			if ( !empty( $output['error_code'] ) ) {
+				$output['error'] = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_api_error_' . $output['error_code'], $output['error'] );
+			}
 			wp_die( json_encode( $output ) );
 		}
 
 		public function get_address_selector_html( $addresses, $address_type ) {
-			$html = '<p class="form-row form-row-wide" id="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector">';
+			$p_id = $address_type . '_gazchaps-woocommerce-getaddress-io-address-selector';
+			$p_id = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_row_id', $p_id );
+			$p_class = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_row_class', 'form-row form-row-wide' );
+
+			$select_id = $address_type . '_gazchaps-woocommerce-getaddress-io-address-selector-select';
+			$select_id = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_' . $address_type . '_selector_select_id', $select_id );
+
+			$html = '<p class="' . esc_attr( $p_class ) . '" id="' . esc_attr( $p_id ) . '">';
 			$html.= '<label for="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector-select">' . __( 'Select Address', 'gazchaps-woocommerce-getaddress-io-plugin' ) . '</label>';
-			$html.= '<span class="woocommerce-input-wrapper"><select id="' . esc_attr( $address_type ) . '_gazchaps-woocommerce-getaddress-io-address-selector-select">';
+			$html.= '<span class="woocommerce-input-wrapper"><select id="' . esc_attr( $select_id ) . '">';
 			$html.= '<option value="">' . esc_html( sprintf( _n( '%s address found', '%s addresses found', count( $addresses ), 'gazchaps-woocommerce-getaddress-io-plugin' ), number_format_i18n( count( $addresses ) ) ) ) . '</option>';
 
 			foreach( $addresses as $address ) {
@@ -147,6 +157,10 @@
 						$message .= sprintf( __( "Sent from: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), home_url() ) . "\r\n";
 						$message .= sprintf( __( "getAddress.io API Key: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), get_option( 'gazchaps_getaddress_io_api_key' ) ) . "\r\n";
 						$message .= sprintf( __( "Date/Time: %s", 'gazchaps-woocommerce-getaddress-io-plugin' ), current_time( 'mysql' ) ) . "\r\n";
+
+						$recipient = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_overusage_email_recipient', $recipient );
+						$subject = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_overusage_email_subject', $subject );
+						$message = apply_filters( 'gazchaps-woocommerce-getaddress-io-plugin_overusage_email_message', $message );
 
 						wp_mail( $recipient, $subject, $message );
 						update_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit_lastsent', time() );
