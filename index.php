@@ -29,7 +29,6 @@
 
 			add_action( 'admin_init', array( $this, 'init_plugin' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_link' ) );
-			//
 		}
 
 		function load_class() {
@@ -55,7 +54,7 @@
 
 		function woocommerce_deactivated_notice() {
 		    ?>
-		    <div class="notice notice-error"><p><?php esc_html_e( 'This plugin requires WooCommerce to be installed and activated.', 'gazchaps-woocommerce-getaddress-io-plugin' ) ?></p></div>
+		    <div class="notice notice-error"><p><?php esc_html_e( 'GazChap\'s WooCommerce getAddress.io Plugin requires WooCommerce to be installed and activated.', 'gazchaps-woocommerce-getaddress-io-plugin' ) ?></p></div>
 		    <?php
 		}
 
