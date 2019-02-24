@@ -31,7 +31,11 @@
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 var response = JSON.parse( xhr.responseText );
-                show_address_selector( response );
+                if ( !response.error_code ) {
+                    show_address_selector( response );
+                } else {
+                    alert( response.error );
+                }
             };
             xhr.send( ajax_data );
         }

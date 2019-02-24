@@ -71,7 +71,7 @@
 
 						case 401:
 							$output = array(
-								'error' =>__('The lookup API key is invalid.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error' =>__('The postcode lookup failed. Please try again later.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
 								'error_code' => $result['response']['code'],
 							);
 							break;
@@ -85,7 +85,7 @@
 
 						case 429:
 							$output = array(
-								'error' =>__('Lookup failed due to overuse.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
+								'error' =>__('The postcode lookup failed. Please try again later.', 'gazchaps-woocommerce-getaddress-io-plugin' ),
 								'error_code' => $result['response']['code'],
 							);
 
