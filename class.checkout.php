@@ -132,13 +132,13 @@
 		}
 
 		public function send_overusage_email() {
-			$recipient = get_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit' );
+			$recipient = trim( get_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit' ) );
 			if ( !empty( $recipient ) ) {
 				if ( '{admin_email}' == strtolower( $recipient ) ) {
-					$recipient = get_bloginfo('admin_email');
+					$recipient = trim( get_bloginfo('admin_email') );
 				}
 
-				if ( !empty( $recipient ) ) {
+				if ( !empty( $recipient ) && is_email( $recipient ) ) {
 					$last_email_sent = get_option( 'gazchaps_getaddress_io_email_when_usage_limit_hit_lastsent' );
 
 					if ( !$last_email_sent || $last_email_sent < strtotime("-24 hours") ) {
