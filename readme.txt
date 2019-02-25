@@ -61,6 +61,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 1.1 (25/02/2019) =
+
+* Added a caching mechanism to prevent repeated lookups for the same postcode in the same browser session, thus saving API usage
+
 = 1.0 (24/02/2019) =
 
 * Initial release.

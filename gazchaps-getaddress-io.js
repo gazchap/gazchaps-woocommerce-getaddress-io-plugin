@@ -1,5 +1,7 @@
 (function(jQuery) {
 
+    var postcode_lookup_cache = [];
+
     function lookup_button_clicked( btn ) {
         var address_type = '';
         if ( btn.id.indexOf('billing_') > -1 ) {
@@ -10,7 +12,7 @@
 
         if ( address_type ) {
             var postcode_field = document.getElementById( address_type + '_postcode' );
-            var postcode = postcode_field.value;
+            var postcode = postcode_field.value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
 
             if ( postcode.length > 0 ) {
                 do_postcode_lookup( postcode, address_type, btn );
@@ -19,6 +21,11 @@
     }
 
     function do_postcode_lookup( postcode, address_type, btn ) {
+        if ( typeof postcode_lookup_cache[ postcode + '_' + address_type ] != 'undefined' ) {
+            show_address_selector( postcode_lookup_cache[ postcode + '_' + address_type ] );
+            return;
+        }
+
         var ajax_data;
         ajax_data = "action=gazchaps_woocommerce_getaddress_io";
         ajax_data += "&postcode=" + postcode;
@@ -32,6 +39,7 @@
             xhr.onload = function() {
                 var response = JSON.parse( xhr.responseText );
                 if ( !response.error_code ) {
+                    postcode_lookup_cache[ postcode + '_' + address_type ] = response;
                     show_address_selector( response );
                 } else {
                     alert( response.error );

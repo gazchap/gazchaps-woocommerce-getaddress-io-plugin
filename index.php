@@ -7,7 +7,7 @@
 		Author URI: https://www.gazchap.com
 		Text Domain: gazchaps-woocommerce-getaddress-io
 		Domain Path: /lang
-		Version: 1.0
+		Version: 1.1
 		WooCommerce requires at least version: 3.0.0
 		WooCommerce tested up to version: 3.5.5
 		License: GNU General Public License v2.0
