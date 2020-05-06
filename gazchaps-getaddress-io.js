@@ -73,11 +73,17 @@
 
         var address_parts = address.split('|');
         var address_field_ids = [ 'address_1', 'address_2', 'city', 'state' ];
-        var field_id;
+        var field_id, field_element;
         for (var i = 0; i < address_field_ids.length; i++) {
             field_id = address_type + '_' + address_field_ids[ i ];
-            document.getElementById( field_id ).value = address_parts[ i ];
+            field_element = document.getElementById( field_id );
+            if ( field_element !== null ) {
+                field_element.value = address_parts[ i ];
+            }
         }
+
+        // trigger WooCommerce's Ajax order update so we get shipping methods updated etc.
+        jQuery( document.body ).trigger( 'update_checkout' );
     }
 
     var lookup_buttons = document.getElementsByClassName('gazchaps-getaddress-io-lookup-button');
