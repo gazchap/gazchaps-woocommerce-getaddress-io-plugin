@@ -40,12 +40,20 @@
                 var response = JSON.parse( xhr.responseText );
                 if ( !response.error_code ) {
                     postcode_lookup_cache[ postcode + '_' + address_type ] = response;
+                    tidy_postcode_field( response );
                     show_address_selector( response );
                 } else {
                     alert( response.error );
                 }
             };
             xhr.send( ajax_data );
+        }
+    }
+
+    function tidy_postcode_field( r ) {
+        var postcode_field = document.getElementById( r.address_type + '_postcode' );
+        if ( postcode_field && r.postcode ) {
+            postcode_field.value = r.postcode;
         }
     }
 

@@ -56,6 +56,7 @@
 
 							$fragment = $this->get_address_selector_html( $addresses, $address_type );
 							$output = array(
+								'postcode' => $array->postcode ?: $postcode,
 								'address_count' => count( $addresses ),
 								'address_type' => $address_type,
 								'fragment' => $fragment,
@@ -132,7 +133,7 @@
 		}
 
 		public function enqueue_js() {
-			wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), '1.1', true );
+			wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), '1.3', true );
 			wp_enqueue_script( 'gazchaps_getaddress_io' );
 
 			$options = array(

@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 5.4.1
-WC tested up to: 4.0.1
+Tested up to: 5.4.2
+WC tested up to: 4.2.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -76,6 +76,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 1.4 (12/06/2020) =
+
+* Uses the postcode returned by getAddress.io to "tidy up" the postcode field after the lookup is completed. Thanks to bootle for the suggestion.
+
 = 1.3 (06/05/2020) =
 
 * Updated JS to trigger WooCommerce's order update Ajax request when an address is selected. Thanks to rfvdan for the report.
