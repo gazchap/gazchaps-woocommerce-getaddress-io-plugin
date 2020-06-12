@@ -36,7 +36,7 @@ See the getAddress.io documentation (https://getaddress.io/Documentation) for mo
 == Requirements ==
 
 [WordPress](https://wordpress.org). Tested up to version 5.4.
-[WooCommerce](https://woocommerce.com). Tested with versions up to 4.0.1, minimum version is likely 3.0.0.
+[WooCommerce](https://woocommerce.com). Tested with versions up to 4.2.0, minimum version is likely 3.0.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
 
 == Installation ==
