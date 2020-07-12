@@ -8,7 +8,7 @@
  * Description: Adds a UK postcode address lookup tool to the WooCommerce checkout process.
  * Tested up to: 5.4.2
  * WC requires at least: 3.0.0
- * WC tested up to: 4.2.0
+ * WC tested up to: 4.3.0
  * Text Domain: gazchaps-woocommerce-getaddress-io
  * Domain Path: /lang
  * License: GNU General Public License v2.0
