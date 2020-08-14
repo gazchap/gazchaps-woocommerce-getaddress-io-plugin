@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 5.4.2
-WC tested up to: 4.3.0
+Tested up to: 5.5
+WC tested up to: 4.3.3
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -35,8 +35,8 @@ See the getAddress.io documentation (https://getaddress.io/Documentation) for mo
 
 == Requirements ==
 
-[WordPress](https://wordpress.org). Tested up to version 5.4.2.
-[WooCommerce](https://woocommerce.com). Tested with versions up to 4.3.0, minimum version is likely 3.0.0.
+[WordPress](https://wordpress.org). Tested up to version 5.5.
+[WooCommerce](https://woocommerce.com). Tested with versions up to 4.3.3, minimum version is likely 3.0.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
 
 == Installation ==
@@ -50,6 +50,15 @@ Once installed and activated, you need to go to the WooCommerce -> Settings -> G
 == Filter Reference ==
 
 For developers, I've included a few filters that you can use to customise certain aspects of the plugin. These are:
+
+= User Interface =
+
+All of these filters take one argument, `$text`.
+
+`gazchaps-woocommerce-getaddress-io_find-address-button-text` - the text shown on the Find Address buttons (default: Find Address)
+`gazchaps-woocommerce-getaddress-io_find-address-searching-text` - the text shown when the Find Address button is selected (default: Searching...)
+
+Note: Although these two texts are translateable, filters will override any translations.
 
 = Error Messages =
 
@@ -76,6 +85,14 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 1.5 (14/08/2020) =
+
+* The address results selector now works properly in the Account pages on the front-end. Thanks to Ben Wheeler for some additional assistance here.
+* Added an additional "Searching..." state when the button is clicked for better user experience
+* Added settings in WC admin panel to change the text shown on the Find Address button, and the text shown in the new "Searching..." state
+* Added filters for the above texts for developer control
+* The JavaScript file is now only enqueued when on the checkout or account pages, which should speed up performance of other pages.
+
 = 1.4 (12/06/2020) =
 
 * Uses the postcode returned by getAddress.io to "tidy up" the postcode field after the lookup is completed. Thanks to bootle for the suggestion.

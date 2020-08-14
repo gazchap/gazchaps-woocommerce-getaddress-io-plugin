@@ -32,11 +32,20 @@
         ajax_data += "&address_type=" + address_type;
 
         if ( XMLHttpRequest ) {
+            if ( btn ) {
+                btn.innerText = gazchaps_getaddress_io.searching_text;
+                btn.disabled = true;
+            }
             var xhr = new XMLHttpRequest();
 
             xhr.open('POST', gazchaps_getaddress_io.ajax_url );
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
+                if ( btn ) {
+                    btn.innerText = gazchaps_getaddress_io.button_text;
+                    btn.disabled = false;
+                }
+
                 var response = JSON.parse( xhr.responseText );
                 if ( !response.error_code ) {
                     postcode_lookup_cache[ postcode + '_' + address_type ] = response;
@@ -44,6 +53,12 @@
                     show_address_selector( response );
                 } else {
                     alert( response.error );
+                }
+            };
+            xhr.onerror = function () {
+                if ( btn ) {
+                    btn.innerText = gazchaps_getaddress_io.button_text;
+                    btn.disabled = false;
                 }
             };
             xhr.send( ajax_data );
@@ -104,7 +119,7 @@
     }
 
     // add event listeners for the selectors
-    jQuery( 'form.woocommerce-checkout' ).on( 'change', 'select', function (e) {
+    jQuery( '.woocommerce-address-fields, .woocommerce-billing-fields, .woocommerce-shipping-fields' ).on( 'change', 'select', function (e) {
         if ( 'billing_gazchaps-woocommerce-getaddress-io-address-selector-select' == e.target.id || 'shipping_gazchaps-woocommerce-getaddress-io-address-selector-select' == e.target.id ) {
             var val = e.target.options[e.target.selectedIndex].value;
             if ( '' == val ) {

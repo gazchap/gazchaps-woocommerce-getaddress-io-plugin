@@ -42,7 +42,7 @@
 			$new_settings[] = array(
 				'id'        => 'gazchaps_getaddress_io_enable_for_billing_address',
 				'title'      => __( 'Enable for Billing Address', 'gazchaps-woocommerce-getaddress-io' ),
-				'desc'      => __( 'Add the lookup field to the Billing Address section in the checkout', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'      => __( 'Add the lookup field to the Billing Address section in checkout and account areas', 'gazchaps-woocommerce-getaddress-io' ),
 				'default'   => 'yes',
 				'type'      => 'checkbox',
 			);
@@ -50,9 +50,25 @@
 			$new_settings[] = array(
 				'id'        => 'gazchaps_getaddress_io_enable_for_shipping_address',
 				'title'      => __( 'Enable for Shipping Address', 'gazchaps-woocommerce-getaddress-io' ),
-				'desc'      => __( 'Add the lookup field to the shipping Address section in the checkout', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'      => __( 'Add the lookup field to the Shipping Address section in checkout and account areas', 'gazchaps-woocommerce-getaddress-io' ),
 				'default'   => 'yes',
 				'type'      => 'checkbox',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_find_address_button_text',
+				'title'      => __( 'Find Address Button Text', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc_tip'      => __( 'Change the text on the Find Address buttons. If left blank, translations will work for "Find Address".', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' ),
+				'type'      => 'text',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_find_address_searching_text',
+				'title'      => __( 'Find Address Searching Text', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc_tip'      => __( 'Change the text shown on the button when a search is in progress. If left blank, translations will work for "Searching...".', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' ),
+				'type'      => 'text',
 			);
 
 			$new_settings[] = array(

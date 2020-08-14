@@ -133,14 +133,19 @@
 		}
 
 		public function enqueue_js() {
-			wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), '1.4', true );
-			wp_enqueue_script( 'gazchaps_getaddress_io' );
+			// only enqueue on checkout or account pages
+			if ( is_checkout() || is_account_page() || is_edit_account_page() ) {
+				wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), '1.5', true );
+				wp_enqueue_script( 'gazchaps_getaddress_io' );
 
-			$options = array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'clear_additional_fields' => apply_filters( 'gazchaps-woocommerce-getaddress-io_clear_additional_fields', true ),
-			);
-			wp_localize_script( 'gazchaps_getaddress_io', 'gazchaps_getaddress_io', $options );
+				$options = array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'clear_additional_fields' => apply_filters( 'gazchaps-woocommerce-getaddress-io_clear_additional_fields', true ),
+					'button_text' => self::get_find_button_text(),
+					'searching_text' => self::get_searching_text(),
+				);
+				wp_localize_script( 'gazchaps_getaddress_io', 'gazchaps_getaddress_io', $options );
+			}
 		}
 
 		public function send_overusage_email() {
@@ -247,7 +252,7 @@
 			// add postcode lookup button
 			$fields[ $type . '_gazchaps_getaddress_io_postcode_lookup_button'] = array(
 				'type' => 'gazchaps_getaddress_io_postcode_lookup_button',
-				'label' => __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' ),
+				'label' => self::get_find_button_text(),
 				'class' => array(
 					'form-row-last',
 				),
@@ -271,6 +276,30 @@
 			</script>
 			<?php
 			return ob_get_clean();
+		}
+
+		/**
+		 * @return string
+		 */
+		private static function get_find_button_text() {
+			$button_text = __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' );
+			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_button_text' ) ) ) {
+				$button_text = get_option( 'gazchaps_getaddress_io_find_address_button_text' );
+			}
+
+			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-button-text', $button_text );
+		}
+
+		/**
+		 * @return string
+		 */
+		private static function get_searching_text() {
+			$searching_text = __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' );
+			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_searching_text' ) ) ) {
+				$searching_text = get_option( 'gazchaps_getaddress_io_find_address_searching_text' );
+			}
+
+			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-searching-text', $searching_text );
 		}
 
 	}
