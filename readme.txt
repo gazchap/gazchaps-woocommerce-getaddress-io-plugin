@@ -85,6 +85,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 1.5.1 (27/08/2020) =
+
+* Fix layout issue seemingly introduced by the WooCommerce 4.4 update, that pushed the "Find Address" button on to the next row.
+
 = 1.5 (14/08/2020) =
 
 * The address results selector now works properly in the Account pages on the front-end. Thanks to Ben Wheeler for some additional assistance here.

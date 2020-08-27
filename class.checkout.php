@@ -185,8 +185,10 @@
 					add_filter( 'woocommerce_form_field_gazchaps_getaddress_io_postcode_lookup_button', array( $this, 'render_postcode_lookup_button' ), 10, 4 );
 				}
 
+				add_filter( 'woocommerce_default_address_fields', array( $this, 'modify_default_fields' ), 10 );
+
 				if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_billing_address' ) ) {
-					add_filter( 'woocommerce_billing_fields', array( $this, 'modify_billing_fields' ) );
+					add_filter( 'woocommerce_billing_fields', array( $this, 'modify_billing_fields' ), 10 );
 				}
 
 				if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_shipping_address' ) ) {
@@ -220,6 +222,10 @@
 			return $locale_fields;
 		}
 
+		public function modify_default_fields( $fields ) {
+			return $this->modify_fields( $fields, '' );
+		}
+
 		public function modify_billing_fields( $fields ) {
 			return $this->modify_fields( $fields, 'billing' );
 		}
@@ -229,28 +235,32 @@
 		}
 
 		private function modify_fields( $fields, $type = 'billing' ) {
+			if ( !empty( $type ) ) {
+				$type .= '_';
+			}
+
 			// move postcode to after country
-			$country_priority = $fields[ $type . '_country']['priority'];
-			$fields[ $type . '_postcode']['priority'] = $country_priority + 5;
+			$country_priority = $fields[ $type . 'country']['priority'];
+			$fields[ $type . 'postcode']['priority'] = $country_priority + 5;
 
 			// change postcode so it's a form-row-first jobber
-			if ( !empty( $fields[ $type . '_postcode']['class'] ) ) {
-				if ( !is_array( $fields[ $type . '_postcode']['class'] ) ) {
-					$fields[ $type . '_postcode']['class'] = array( $fields[ $type . '_postcode']['class'] );
+			if ( !empty( $fields[ $type . 'postcode']['class'] ) ) {
+				if ( !is_array( $fields[ $type . 'postcode']['class'] ) ) {
+					$fields[ $type . 'postcode']['class'] = array( $fields[ $type . 'postcode']['class'] );
 				}
 			} else {
-				$fields[ $type . '_postcode']['class'] = array();
+				$fields[ $type . 'postcode']['class'] = array();
 			}
-			$fields[ $type . '_postcode']['class'][] = 'form-row-first';
+			$fields[ $type . 'postcode']['class'][] = 'form-row-first';
 
 			// remove form-row-wide if it's in there
-			if ( false !== ( $wide_key = array_search( 'form-row-wide', $fields[ $type . '_postcode']['class'] ) ) ) {
-				unset( $fields[ $type . '_postcode']['class'][ $wide_key ] );
-				$fields[ $type . '_postcode']['class'] = array_values( $fields[ $type . '_postcode']['class'] );
+			if ( false !== ( $wide_key = array_search( 'form-row-wide', $fields[ $type . 'postcode']['class'] ) ) ) {
+				unset( $fields[ $type . 'postcode']['class'][ $wide_key ] );
+				$fields[ $type . 'postcode']['class'] = array_values( $fields[ $type . 'postcode']['class'] );
 			}
 
 			// add postcode lookup button
-			$fields[ $type . '_gazchaps_getaddress_io_postcode_lookup_button'] = array(
+			$fields[ $type . 'gazchaps_getaddress_io_postcode_lookup_button'] = array(
 				'type' => 'gazchaps_getaddress_io_postcode_lookup_button',
 				'label' => self::get_find_button_text(),
 				'class' => array(
