@@ -4,7 +4,7 @@ Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,uni
 Requires at least: 4.8.0
 Requires PHP: 5.6
 Tested up to: 5.5
-WC tested up to: 4.4.1
+WC tested up to: 4.6.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -36,7 +36,7 @@ See the getAddress.io documentation (https://getaddress.io/Documentation) for mo
 == Requirements ==
 
 [WordPress](https://wordpress.org). Tested up to version 5.5.
-[WooCommerce](https://woocommerce.com). Tested with versions up to 4.4.1, minimum version is likely 3.0.0.
+[WooCommerce](https://woocommerce.com). Tested with versions up to 4.6.0, minimum version is likely 3.0.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
 
 == Installation ==
