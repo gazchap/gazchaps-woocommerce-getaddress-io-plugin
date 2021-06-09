@@ -2,6 +2,67 @@
 
     var postcode_lookup_cache = [];
 
+    function show_or_hide_address_fields( type, show_or_hide ) {
+        if ( gazchaps_getaddress_io.hide_address_fields && gazchaps_getaddress_io.fields_to_hide && gazchaps_getaddress_io.field_prefixes ) {
+            var address_fields = gazchaps_getaddress_io.fields_to_hide || [];
+            for ( var i in gazchaps_getaddress_io.field_prefixes ) {
+                var prefix = gazchaps_getaddress_io.field_prefixes[i];
+                if ( !type || prefix === type ) {
+                    var is_gb = false;
+
+                    // only modify if they're all empty and country is set to GB
+                    var country_field = prefix + '_country';
+                    var countryElement = document.getElementById( country_field );
+                    if ( countryElement && 'GB' == countryElement.options[ countryElement.selectedIndex ].value ) {
+                        is_gb = true;
+                    }
+
+                    var all_empty = true;
+                    for ( var j in gazchaps_getaddress_io.fields_to_hide ) {
+                        var field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
+                        var fieldElement = document.getElementById( field );
+                        if ( fieldElement && '' != fieldElement.value ) {
+                            all_empty = false;
+                            break;
+                        }
+                    }
+
+                    if ( ( all_empty && is_gb ) || 'show' === show_or_hide ) {
+                        for ( var j in gazchaps_getaddress_io.fields_to_hide ) {
+                            var field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
+                            var fieldContainer = document.getElementById( field + '_field' );
+                            if ( fieldContainer ) {
+                                fieldContainer.style.display = ( 'hide' == show_or_hide ) ? 'none' : '';
+                            }
+                        }
+                        if ( 'hide' === show_or_hide ) {
+                            show_or_hide_enter_manually_button( prefix, 'show' );
+                        }
+                    } else if ( 'hide' === show_or_hide ) {
+                        show_or_hide_enter_manually_button( prefix, 'hide' );
+                    }
+                }
+            }
+        }
+    }
+
+    function show_or_hide_enter_manually_button( type, show_or_hide ) {
+        var enter_manually_row_id = type + '_gazchaps_getaddress_io_enter_address_manually_button_field';
+        var enter_manually_row = document.getElementById( enter_manually_row_id );
+        if ( enter_manually_row ) {
+            enter_manually_row.style.display = ( 'hide' == show_or_hide ) ? 'none' : '';
+        }
+    }
+
+    function hide_address_fields( type ) {
+        show_or_hide_address_fields( type, 'hide' );
+    }
+
+    function show_address_fields( type ) {
+        show_or_hide_address_fields( type, 'show' );
+        show_or_hide_enter_manually_button( type, 'hide' );
+    }
+
     function lookup_button_clicked( btn ) {
         var address_type = '';
         if ( btn.id.indexOf('billing_') > -1 ) {
@@ -17,6 +78,20 @@
             if ( postcode.length > 0 ) {
                 do_postcode_lookup( postcode, address_type, btn );
             }
+        }
+    }
+
+    function enter_manually_button_clicked( btn ) {
+        var address_type = '';
+        if ( btn.id.indexOf('billing_') > -1 ) {
+            address_type = 'billing';
+        } else if( btn.id.indexOf('shipping_') > -1 ) {
+            address_type = 'shipping';
+        }
+
+        if ( address_type ) {
+            show_address_fields( address_type );
+            btn.closest('.form-row').style.display = 'none';
         }
     }
 
@@ -104,6 +179,9 @@
                 field_element.value = address_parts[ i ];
             }
         }
+        if ( '||||' !== address ) {
+            show_address_fields( address_type );
+        }
 
         // trigger WooCommerce's Ajax order update so we get shipping methods updated etc.
         jQuery( document.body ).trigger( 'update_checkout' );
@@ -114,6 +192,15 @@
         for(var i = 0; i < lookup_buttons.length; i++) {
             lookup_buttons[i].addEventListener("click", function(e) {
                 lookup_button_clicked( this );
+            });
+        }
+    }
+
+    var enter_manually_buttons = document.getElementsByClassName('gazchaps-getaddress-io-enter-address-manually-button');
+    if ( enter_manually_buttons.length > 0 ) {
+        for(var i = 0; i < enter_manually_buttons.length; i++) {
+            enter_manually_buttons[i].addEventListener("click", function(e) {
+                enter_manually_button_clicked( this );
             });
         }
     }
@@ -129,13 +216,25 @@
         }
     } );
 
-    // if we're on the WC checkout, add a clearfix to the additional fields wrappter
+    // if we're on the WC checkout, add a clearfix to the additional fields wrapper
     if ( gazchaps_getaddress_io.clear_additional_fields ) {
         var additional_fields_wrappers = document.getElementsByClassName('woocommerce-additional-fields__field-wrapper');
         if ( additional_fields_wrappers.length > 0 ) {
             for(var i = 0; i < additional_fields_wrappers.length; i++) {
                 additional_fields_wrappers[i].style.clear = 'both';
             }
+        }
+    }
+
+    hide_address_fields();
+    jQuery( document ).on( 'updated_checkout', function () {
+        hide_address_fields();
+    } );
+
+    var additional_fields_wrappers = document.getElementsByClassName('woocommerce-additional-fields__field-wrapper');
+    if ( additional_fields_wrappers.length > 0 ) {
+        for(var i = 0; i < additional_fields_wrappers.length; i++) {
+            additional_fields_wrappers[i].style.clear = 'both';
         }
     }
 

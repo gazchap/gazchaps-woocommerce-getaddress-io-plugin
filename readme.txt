@@ -3,12 +3,12 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 5.6
-WC tested up to: 4.9.0
+Tested up to: 5.7
+WC tested up to: 5.4.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
-Donate link: https://paypal.me/gazchap
+Donate link: https://ko-fi.com/gazchap
 
 Adds a postcode lookup tool into WooCommerce's billing and shipping address areas on the Checkout. The postcode lookup tool uses https://getaddress.io to do the lookups, and an API key is therefore required. See installation instructions below.
 
@@ -35,8 +35,8 @@ See the getAddress.io documentation (https://getaddress.io/Documentation) for mo
 
 == Requirements ==
 
-[WordPress](https://wordpress.org). Tested up to version 5.6.
-[WooCommerce](https://woocommerce.com). Tested with versions up to 4.9.0, minimum version is likely 3.0.0.
+[WordPress](https://wordpress.org). Tested up to version 5.7.
+[WooCommerce](https://woocommerce.com). Tested with versions up to 5.4.0, minimum version is likely 3.0.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
 
 == Installation ==
@@ -57,6 +57,7 @@ All of these filters take one argument, `$text`.
 
 `gazchaps-woocommerce-getaddress-io_find-address-button-text` - the text shown on the Find Address buttons (default: Find Address)
 `gazchaps-woocommerce-getaddress-io_find-address-searching-text` - the text shown when the Find Address button is selected (default: Searching...)
+`gazchaps-woocommerce-getaddress-io_enter-address-manually-text` - the text shown for the "Enter an address manually" link (default: Enter an address manually)
 
 Note: Although these two texts are translateable, filters will override any translations.
 
@@ -85,6 +86,15 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 2.0 (TBC) =
+
+* Added postcode lookup to the WooCommerce admin when creating and editing orders
+* Added option (disabled by default) to hide the address input fields until an address has been selected
+* Added option to show an "Enter address manually" button for use in conjunction with the above "hide address fields" option
+* Added new filter for changing the "Enter address manually" text
+* Added link to getaddress.io in plugin settings
+* Updated donation link to Ko-Fi instead of PayPal
+
 = 1.5.1 (27/08/2020) =
 
 * Fix layout issue seemingly introduced by the WooCommerce 4.4 update, that pushed the "Find Address" button on to the next row.

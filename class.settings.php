@@ -15,15 +15,10 @@
 			$new_settings[] = array(
 				'id'       => 'gazchaps_getaddress_io_section_title',
 				'title' => __( 'getAddress.io Settings', 'gazchaps-woocommerce-getaddress-io' ),
-				'desc' => __( 'Settings required for GazChap\'s WooCommerce getAddress.io Postcode Lookup. Get your API key from https://getaddress.io', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc' =>   '<p>' . sprintf( __( 'Settings required for GazChap\'s WooCommerce getAddress.io Postcode Lookup. Get your API key from <a href="%1$s" target="_blank" rel="noopener noreferrer">%1$s</a>', 'gazchaps-woocommerce-getaddress-io' ), 'https://getaddress.io' ) . '</p>' .
+				            '<p>' . __( 'To test the lookup without affecting your API usage limit, use the postcode <strong>TR19 7AA</strong>.', 'gazchaps-woocommerce-getaddress-io' ) . '</p>' .
+							'<p>' . sprintf( __( 'If you find this free plugin to be useful, please consider <a href="%1$s" target="_blank" rel="noopener noreferrer">making a donation</a> to help me support and maintain the plugin in the future. Thanks!', 'gazchaps-woocommerce-getaddress-io' ), esc_attr( esc_url( GazChap_WC_GetAddress_Plugin_Common::DONATE_URL ) ) ) . '</p>',
 				'type'     => 'title',
-			);
-
-			$new_settings[] = array(
-				'id'        => 'gazchaps_getaddress_io_last_desc',
-				'title'     => '',
-				'desc'      => __( 'To test the lookup without affecting your API usage limit, use the postcode TR19 7AA.', 'gazchaps-woocommerce-getaddress-io' ),
-				'type'      => 'title',
 			);
 
 			$new_settings[] = array(
@@ -56,6 +51,30 @@
 			);
 
 			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_enable_for_wc_admin',
+				'title'      => __( 'Enable in Admin', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'      => __( 'Add the lookup field to the address when managing orders in the WooCommerce admin', 'gazchaps-woocommerce-getaddress-io' ),
+				'default'   => 'yes',
+				'type'      => 'checkbox',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_hide_address_fields',
+				'title'      => __( 'Hide Address Fields', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'      => __( 'Hide address fields until a lookup is performed and an address is selected - does not hide fields if an address is already present!', 'gazchaps-woocommerce-getaddress-io' ),
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_allow_manual_entry',
+				'title'      => __( 'Allow Manual Entry', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'      => __( 'Allow customers to choose to enter their address manually, when \'Hide Address Fields\' is turned on - think very carefully before turning this off!', 'gazchaps-woocommerce-getaddress-io' ),
+				'default'   => 'yes',
+				'type'      => 'checkbox',
+			);
+
+			$new_settings[] = array(
 				'id'        => 'gazchaps_getaddress_io_find_address_button_text',
 				'title'      => __( 'Find Address Button Text', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc_tip'      => __( 'Change the text on the Find Address buttons. If left blank, translations will work for "Find Address".', 'gazchaps-woocommerce-getaddress-io' ),
@@ -68,6 +87,14 @@
 				'title'      => __( 'Find Address Searching Text', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc_tip'      => __( 'Change the text shown on the button when a search is in progress. If left blank, translations will work for "Searching...".', 'gazchaps-woocommerce-getaddress-io' ),
 				'placeholder' => __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' ),
+				'type'      => 'text',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_enter_address_manually_text',
+				'title'      => __( 'Enter Address Manually Text', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc_tip'      => __( 'Change the link text that is clicked to enter an address manually. If left blank, translations will work for "Enter an address manually".', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => __( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' ),
 				'type'      => 'text',
 			);
 
