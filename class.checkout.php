@@ -59,7 +59,7 @@
 		public function enqueue_js() {
 			// only enqueue on checkout or account pages
 			if ( is_checkout() || is_account_page() || is_edit_account_page() ) {
-				wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.js', array( 'jquery' ), GazChap_WC_GetAddress_Plugin_Common::PLUGIN_VERSION, true );
+				wp_register_script( 'gazchaps_getaddress_io', GC_WC_GAIO_URL . 'gazchaps-getaddress-io.min.js', array( 'jquery' ), GazChap_WC_GetAddress_Plugin_Common::PLUGIN_VERSION, true );
 				wp_enqueue_script( 'gazchaps_getaddress_io' );
 
 				wp_localize_script( 'gazchaps_getaddress_io', 'gazchaps_getaddress_io', GazChap_WC_GetAddress_Plugin_Common::get_localize_js_options() );

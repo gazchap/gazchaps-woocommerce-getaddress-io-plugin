@@ -97,6 +97,7 @@
 
     function do_postcode_lookup( postcode, address_type, btn ) {
         if ( typeof postcode_lookup_cache[ postcode + '_' + address_type ] != 'undefined' ) {
+            tidy_postcode_field( postcode_lookup_cache[ postcode + '_' + address_type ] );
             show_address_selector( postcode_lookup_cache[ postcode + '_' + address_type ] );
             return;
         }
@@ -168,6 +169,7 @@
     function do_address_change( src_id, address ) {
         var address_type = 'billing';
         if ( src_id.indexOf('shipping_') > -1 ) address_type = 'shipping';
+        if ( !address ) address = '||||';
 
         var address_parts = address.split('|');
         var address_field_ids = [ 'address_1', 'address_2', 'city', 'state' ];
@@ -206,14 +208,12 @@
     }
 
     // add event listeners for the selectors
-    jQuery( '.woocommerce-address-fields, .woocommerce-billing-fields, .woocommerce-shipping-fields' ).on( 'change', 'select', function (e) {
-        if ( 'billing_gazchaps-woocommerce-getaddress-io-address-selector-select' == e.target.id || 'shipping_gazchaps-woocommerce-getaddress-io-address-selector-select' == e.target.id ) {
-            var val = e.target.options[e.target.selectedIndex].value;
-            if ( '' == val ) {
-                val = '||||';
-            }
-            do_address_change( e.target.id, val );
+    jQuery( document ).on( 'change', '#billing_gazchaps-woocommerce-getaddress-io-address-selector-select, #shipping_gazchaps-woocommerce-getaddress-io-address-selector-select', function (e) {
+        var val = e.target.options[e.target.selectedIndex].value;
+        if ( '' == val ) {
+            val = '||||';
         }
+        do_address_change( e.target.id, val );
     } );
 
     // if we're on the WC checkout, add a clearfix to the additional fields wrapper
@@ -230,12 +230,5 @@
     jQuery( document ).on( 'updated_checkout', function () {
         hide_address_fields();
     } );
-
-    var additional_fields_wrappers = document.getElementsByClassName('woocommerce-additional-fields__field-wrapper');
-    if ( additional_fields_wrappers.length > 0 ) {
-        for(var i = 0; i < additional_fields_wrappers.length; i++) {
-            additional_fields_wrappers[i].style.clear = 'both';
-        }
-    }
 
 })(jQuery);

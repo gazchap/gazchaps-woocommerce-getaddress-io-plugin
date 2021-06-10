@@ -4,7 +4,7 @@
 	}
 
 	class GazChap_WC_GetAddress_Plugin_Common {
-		const PLUGIN_VERSION = '2.0';
+		const PLUGIN_VERSION = '2.0.2';
 		const DONATE_URL = 'https://ko-fi.com/gazchap';
 
 		public static function lookup_postcode( $postcode, $address_type = 'billing' ) {

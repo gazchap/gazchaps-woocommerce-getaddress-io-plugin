@@ -86,7 +86,17 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
-= 2.0 (TBC) =
+= 2.0.2 (10/06/2021) =
+
+* Removed reliance on certain CSS classes in the checkout, as some themes apparently don't use them. Thanks to prodograw for the report.
+* Fixed a bug that would stop the "tidy postcode" routine running when looking up a postcode currently in the cache
+* Removed some duplicate JS that had crept in
+
+= 2.0.1 (09/06/2021) =
+
+* Somehow the push I did to the WordPress plugin repo missed some files - hopefully this will fix it...
+
+= 2.0 (09/06/2021) =
 
 * Added postcode lookup to the WooCommerce admin when creating and editing orders
 * Added option (disabled by default) to hide the address input fields until an address has been selected
@@ -135,3 +145,4 @@ Licensed under the [GNU General Public License v2.0](http://www.gnu.org/licenses
 1. The Find Address button on the default Storefront theme, before the lookup has been completed
 2. The address selection drop-down menu on display
 3. The administrator settings in the WooCommerce administration dashboard
+4. The address lookup feature within the WooCommerce add/edit order screen
