@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 5.7
-WC tested up to: 5.4.0
+Tested up to: 5.8
+WC tested up to: 5.9
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -47,6 +47,18 @@ Install via the WordPress Plugin Directory, or download a release from this repo
 
 Once installed and activated, you need to go to the WooCommerce -> Settings -> General page in the WordPress dashboard. You can enter your API key and set your other options here.
 
+== Conflicts with other plugins ==
+
+Certain plugins that also modify checkout fields can conflict with this plugin and prevent it from working.
+
+Usually, the symptom of this is that the "Find Address" button does not appear.
+
+Since version 2.1, I've added a Hook Priority setting at the bottom of the settings for the plugin that you can use to try and fix these conflicts.
+
+The default priority is 10, but using a higher number makes my plugin modify the checkout later in the process - you will probably need to experiment to find the priority that makes my plugin's changes happen after the conflicting plugin.
+
+For example, a priority of 1001 seems to fix conflicts with the "Checkout Field Editor" plugin by ThemeHigh.
+
 == Filter Reference ==
 
 For developers, I've included a few filters that you can use to customise certain aspects of the plugin. These are:
@@ -86,6 +98,18 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 2.1 (09/12/2021) =
+
+* Added a Hook Priority setting that can be used to try and correct conflicts caused by plugins like Checkout Field Editor Pro. Increase the priority until the lookup button comes back.
+
+= 2.0.4 (15/07/2021) =
+
+* Fixed an issue with the Enter/Return key (or equivalent on mobile) submitting the entire checkout form instead of triggering the postcode lookup. Thanks to donlee101 for the report.
+
+= 2.0.3 (10/06/2021) =
+
+* Fixed a bug with the new hide address fields option not functioning correctly when GB is the only country available to select. Thanks again to prodograw.
+
 = 2.0.2 (10/06/2021) =
 
 * Removed reliance on certain CSS classes in the checkout, as some themes apparently don't use them. Thanks to prodograw for the report.

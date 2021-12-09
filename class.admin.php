@@ -42,12 +42,15 @@
 		public function init_fields() {
 			if ( 'yes' == get_option( 'gazchaps_getaddress_io_enabled' ) && !empty( get_option( 'gazchaps_getaddress_io_api_key' ) ) ) {
 				if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_wc_admin' ) ) {
+					$priority = intval( get_option( 'gazchaps_getaddress_io_hook_priority', 10 ) );
+					if ( $priority < 1 ) $priority = 1;
+
 					if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_billing_address' ) ) {
-						add_filter( 'woocommerce_admin_billing_fields', array( $this, 'modify_fields' ), 10 );
+						add_filter( 'woocommerce_admin_billing_fields', array( $this, 'modify_fields' ), $priority );
 					}
 
 					if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_shipping_address' ) ) {
-						add_filter( 'woocommerce_admin_shipping_fields', array( $this, 'modify_fields' ), 10 );
+						add_filter( 'woocommerce_admin_shipping_fields', array( $this, 'modify_fields' ), $priority );
 					}
 				}
 			}

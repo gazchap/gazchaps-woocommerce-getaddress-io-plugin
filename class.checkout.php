@@ -77,14 +77,17 @@
 					add_filter( 'woocommerce_form_field_gazchaps_getaddress_io_enter_address_manually_button', array( $this, 'render_enter_address_manually_button' ), 10, 4 );
 				}
 
-				add_filter( 'woocommerce_default_address_fields', array( $this, 'modify_default_fields' ), 10 );
+				$priority = intval( get_option( 'gazchaps_getaddress_io_hook_priority', 10 ) );
+				if ( $priority < 1 ) $priority = 1;
+
+				add_filter( 'woocommerce_default_address_fields', array( $this, 'modify_default_fields' ), $priority );
 
 				if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_billing_address' ) ) {
-					add_filter( 'woocommerce_billing_fields', array( $this, 'modify_billing_fields' ), 10 );
+					add_filter( 'woocommerce_billing_fields', array( $this, 'modify_billing_fields' ), $priority );
 				}
 
 				if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_shipping_address' ) ) {
-					add_filter( 'woocommerce_shipping_fields', array( $this, 'modify_shipping_fields' ), 10, 1 );
+					add_filter( 'woocommerce_shipping_fields', array( $this, 'modify_shipping_fields' ), $priority, 1 );
 				}
 			}
 		}
@@ -144,6 +147,7 @@
 				$fields[ $type . 'postcode']['class'] = array();
 			}
 			$fields[ $type . 'postcode']['class'][] = 'form-row-first';
+			$fields[ $type . 'postcode']['class'][] = $type . 'gazchaps_getaddress_io_postcode_field'; // used for JS targeting
 
 			// remove form-row-wide if it's in there
 			if ( false !== ( $wide_key = array_search( 'form-row-wide', $fields[ $type . 'postcode']['class'] ) ) ) {

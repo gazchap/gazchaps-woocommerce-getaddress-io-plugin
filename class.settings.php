@@ -107,6 +107,14 @@
 			);
 
 			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_hook_priority',
+				'title'     => __( 'Hook Priority', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc'  => __( 'Some plugins that also modify the checkout fields may conflict with this plugin and stop the lookup button from appearing.<br>Experiment with a higher priority here to see if this can fix the conflict.<br>e.g. for <strong>Checkout Field Editor</strong> a priority of 1001 or above seems to work.', 'gazchaps-woocommerce-getaddress-io' ),
+				'default'   => '10',
+				'type'      => 'text',
+			);
+
+			$new_settings[] = array(
 				'id'        => 'gazchap_getaddress_io_options',
 				'type'      => 'sectionend',
 			);
