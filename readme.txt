@@ -3,14 +3,14 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 5.8
-WC tested up to: 5.9
+Tested up to: 5.9
+WC tested up to: 6.1.1
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
 Donate link: https://ko-fi.com/gazchap
 
-Adds a postcode lookup tool into WooCommerce's billing and shipping address areas on the Checkout. The postcode lookup tool uses https://getaddress.io to do the lookups, and an API key is therefore required. See installation instructions below.
+Adds a UK postcode lookup tool into WooCommerce's checkout process.
 
 == Description ==
 This plugin enables your customers to complete their billing/shipping address by entering their postcode and selecting their address from the options given.
@@ -35,8 +35,7 @@ See the getAddress.io documentation (https://getaddress.io/Documentation) for mo
 
 == Requirements ==
 
-[WordPress](https://wordpress.org). Tested up to version 5.7.
-[WooCommerce](https://woocommerce.com). Tested with versions up to 5.4.0, minimum version is likely 3.0.0.
+[WooCommerce](https://woocommerce.com), at least version 3.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
 
 == Installation ==
