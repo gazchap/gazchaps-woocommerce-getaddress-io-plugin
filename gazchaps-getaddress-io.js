@@ -13,8 +13,10 @@
                     // only modify if they're all empty and country is set to GB
                     var country_field = prefix + '_country';
                     var countryElement = document.getElementById( country_field );
-                    if ( countryElement && 'GB' == countryElement.options[ countryElement.selectedIndex ].value ) {
-                        is_gb = true;
+                    if ( countryElement ) {
+                        if ( ( countryElement.value && 'GB' == countryElement.value ) || ( countryElement.options && 'GB' == countryElement.options[ countryElement.selectedIndex ].value ) ) {
+                            is_gb = true;
+                        }
                     }
 
                     var all_empty = true;
@@ -189,23 +191,13 @@
         jQuery( document.body ).trigger( 'update_checkout' );
     }
 
-    var lookup_buttons = document.getElementsByClassName('gazchaps-getaddress-io-lookup-button');
-    if ( lookup_buttons.length > 0 ) {
-        for(var i = 0; i < lookup_buttons.length; i++) {
-            lookup_buttons[i].addEventListener("click", function(e) {
-                lookup_button_clicked( this );
-            });
-        }
-    }
+    jQuery( document ).on( 'click', '.gazchaps-getaddress-io-lookup-button', function () {
+        lookup_button_clicked( this );
+    } );
 
-    var enter_manually_buttons = document.getElementsByClassName('gazchaps-getaddress-io-enter-address-manually-button');
-    if ( enter_manually_buttons.length > 0 ) {
-        for(var i = 0; i < enter_manually_buttons.length; i++) {
-            enter_manually_buttons[i].addEventListener("click", function(e) {
-                enter_manually_button_clicked( this );
-            });
-        }
-    }
+    jQuery( document ).on( 'click', '.gazchaps-getaddress-io-enter-address-manually-button', function () {
+        enter_manually_button_clicked( this );
+    } );
 
     // add event listeners for the selectors
     jQuery( document ).on( 'change', '#billing_gazchaps-woocommerce-getaddress-io-address-selector-select, #shipping_gazchaps-woocommerce-getaddress-io-address-selector-select', function (e) {
@@ -214,6 +206,34 @@
             val = '||||';
         }
         do_address_change( e.target.id, val );
+    } );
+
+    // add event listener to disable enter key on the postcode fields
+    jQuery( document ).on( 'keydown', '.billing_gazchaps_getaddress_io_postcode_field input, .shipping_gazchaps_getaddress_io_postcode_field input', function (e) {
+        if ( e.defaultPrevented ) return;
+        var activateFindAddressButton = false;
+        if ( e.key !== undefined ) {
+            if ( 'Enter' === e.key ) {
+                activateFindAddressButton = true;
+            }
+        } else if ( e.keyCode !== undefined ) {
+            if ( 13 === e.keyCode ) {
+                activateFindAddressButton = true;
+            }
+        }
+        if ( activateFindAddressButton ) {
+            var $btn;
+            if ( jQuery( this ).attr('name').indexOf('billing_') > -1 ) {
+                $btn = jQuery( '#billing_gazchaps_getaddress_io_postcode_lookup_button_field_button' );
+            } else {
+                $btn = jQuery( '#shipping_gazchaps_getaddress_io_postcode_lookup_button_field_button' );
+            }
+            if ( $btn ) {
+                $btn.trigger( 'click' );
+            }
+            e.preventDefault();
+            return false;
+        }
     } );
 
     // if we're on the WC checkout, add a clearfix to the additional fields wrapper

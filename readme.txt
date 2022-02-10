@@ -4,7 +4,7 @@ Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,uni
 Requires at least: 4.8.0
 Requires PHP: 5.6
 Tested up to: 5.9
-WC tested up to: 6.1.1
+WC tested up to: 6.2
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -97,6 +97,11 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 2.2 (10/02/2022) =
+
+* Stopped using <script> elements to output the Find Address buttons, as this was causing issues with some other checkout-modification plugins like Fluid Checkout.
+* Updated event listeners for the Find Address and Enter Address Manually elements so that they work if those elements are first added to the page after load.
+
 = 2.1 (09/12/2021) =
 
 * Added a Hook Priority setting that can be used to try and correct conflicts caused by plugins like Checkout Field Editor Pro. Increase the priority until the lookup button comes back.

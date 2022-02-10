@@ -185,13 +185,10 @@
 			$class = ( !empty( $args['class'] ) ) ? esc_attr( implode( ' ', $args['class'] ) ) : '';
 			$id    = ( !empty( $args['id'] ) ) ? esc_attr( $args['id'] ) . '_field' : '';
 
-			// note: this render code is in a <script> tag so that it does not appear if JS is disabled for any reason
 			ob_start();
 			?>
-			<script>
-				document.write( '<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>"><br>' );
-				document.write( '<button type="button" class="button alt gazchaps-getaddress-io-lookup-button" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button></p>' );
-			</script>
+			<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>"><br>
+			<button type="button" class="button alt gazchaps-getaddress-io-lookup-button" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button></p>
 			<?php
 			return ob_get_clean();
 		}
@@ -201,13 +198,10 @@
 			$class = ( !empty( $args['class'] ) ) ? esc_attr( implode( ' ', $args['class'] ) ) : '';
 			$id    = ( !empty( $args['id'] ) ) ? esc_attr( $args['id'] ) . '_field' : '';
 
-			// note: this render code is in a <script> tag so that it does not appear if JS is disabled for any reason
 			ob_start();
 			?>
-			<script>
-				document.write( '<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>"><br>' );
-				document.write( '<button type="button" class="button gazchaps-getaddress-io-enter-address-manually-button" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button></p>' );
-			</script>
+			<p class="form-row <?php echo $class; ?>" id="<?php echo $id; ?>" data-priority="<?php echo esc_attr( $priority ); ?>"><br>
+			<button type="button" class="button gazchaps-getaddress-io-enter-address-manually-button" id="<?php echo $id;?>_button"><?php echo esc_html( $args['label'] ); ?></button></p>
 			<?php
 			return ob_get_clean();
 		}
