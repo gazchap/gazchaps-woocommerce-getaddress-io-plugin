@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 6.1
-WC tested up to: 7.0.0
+Tested up to: 6.2
+WC tested up to: 7.8.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -97,6 +97,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
 
 == Changelog ==
+= 2.3 (14/06/2023) =
+
+* Declared compatibility with WooCommerce High Performance Order Storage -- thanks benatherton for the information.
+
 = 2.2 (10/02/2022) =
 
 * Stopped using <script> elements to output the Find Address buttons, as this was causing issues with some other checkout-modification plugins like Fluid Checkout.
