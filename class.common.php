@@ -16,7 +16,13 @@
 
 				if ( !empty( $postcode ) ) {
 					try {
-						$results = GazChap_WC_GetAddress_Plugin_API::autocomplete( rawurlencode( $postcode ) );
+						$results = null;
+						if ( GazChap_WC_GetAddress_Plugin_Database::enabled() ) {
+							$results = GazChap_WC_GetAddress_Plugin_Database::lookup( $postcode );
+						}
+						if ( empty( $results ) ) {
+							$results = GazChap_WC_GetAddress_Plugin_API::autocomplete( rawurlencode( $postcode ) );
+						}
 
 						$address_type = ( 'shipping' == $address_type ) ? 'shipping' : 'billing';
 

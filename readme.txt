@@ -13,25 +13,15 @@ Donate link: https://ko-fi.com/gazchap
 Adds a UK postcode lookup tool into WooCommerce's checkout process.
 
 == Description ==
-This plugin enables your customers to complete their billing/shipping address by entering their postcode and selecting their address from the options given.
+This plugin enables your customers to complete their billing/shipping addresses by entering their postcode and selecting their address from the options given.
 
 It utilises getAddress.io (https://getaddress.io) to do the lookup using their Royal Mail Postcode Address File.
 
 An API key is required for the integration to work, and the integration only appears when the customer has selected United Kingdom (or, more specifically, the ISO-3166-2 code "GB") for their country.
 
-It can optionally be turned off for the shipping or billing addresses, and it can be configured to send an email notification to a nominated address if the getAddress.io API key hits its usage limit.
+It can optionally be turned off for the shipping or billing addresses, and can be enabled or disabled in each of the checkout, customer account and WooCommerce admin screens.
 
-== Testing ==
-getAddress.io offers several test postcodes that can be entered to test that it is working without impacting on your usage limits. These are:
-
-`XX2 00X` - Returns a 'successful' response 200. Your request was successful.
-`XX4 04X` - Returns 'not found' error 404. No addresses could be found for this postcode.
-`XX4 00X` - Returns 'bad request' error 400. Your postcode is not valid.
-`XX4 01X` - Returns 'forbidden' error 401. Your api-key is not valid.
-`XX4 29X` - Returns 'too many requests' error 429. You have made more requests than your allowed limit.
-`XX5 00X` - Returns 'server error' error 500. Server error, you should never see this.
-
-See the getAddress.io documentation (https://getaddress.io/Documentation) for more details.
+Postcodes that are looked up are saved in a custom database table for 24 hours to help reduce your costs for use of the getAddress.io API.
 
 == Requirements ==
 
@@ -91,11 +81,13 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
 
 == Changelog ==
-= 3.0 (XX/XX/2023) =
+= 3.0 (08/10/2023) =
 
 * Rewritten to support the new getAddress.io API -- the API used previously is no longer available to new getAddress.io customers.
-* Removed ability to send an over-usage email, as getAddress.io now does this natively.
+* Added custom database table to cache postcode results across visitors. Results are cached for 1 day before being purged in a daily cron job.
 * Moved settings to their own section (at the top) in the WooCommerce -> Settings -> General tab.
+* Removed ability to send an over-usage email, as getAddress.io now does this natively.
+* Removed notes about test postcodes from readme and settings screen, they're no longer supported.
 
 = 2.3 (14/06/2023) =
 

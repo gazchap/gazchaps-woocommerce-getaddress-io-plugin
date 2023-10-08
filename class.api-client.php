@@ -34,6 +34,11 @@
 
 			// add the individual lines of the address in as per old API
 			array_map( array( self::class, 'format_result' ), $results->suggestions );
+
+			// store in database if available
+			if ( GazChap_WC_GetAddress_Plugin_Database::enabled() ) {
+				GazChap_WC_GetAddress_Plugin_Database::store( $postcode, $results );
+			}
 			return $results;
 		}
 

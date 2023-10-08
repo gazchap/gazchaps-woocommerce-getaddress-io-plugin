@@ -28,6 +28,7 @@
 		function __construct() {
 			add_action( 'plugins_loaded', array( $this, 'load_languages' ) );
 			add_action( 'plugins_loaded', array( $this, 'load_class' ), 15 );
+			add_action( 'plugins_loaded', array( $this, 'load_database' ), 20 );
 
 			add_action( 'admin_init', array( $this, 'init_plugin' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_link' ) );
@@ -38,12 +39,15 @@
 					\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 				}
 			} );
+
+			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 		}
 
 		function load_class() {
 			require GC_WC_GAIO_DIR . 'class.exception.php';
 			require GC_WC_GAIO_DIR . 'class.api-client.php';
 			require GC_WC_GAIO_DIR . 'class.common.php';
+			require GC_WC_GAIO_DIR . 'class.database.php';
 			require GC_WC_GAIO_DIR . 'class.settings.php';
 			require GC_WC_GAIO_DIR . 'class.checkout.php';
 
@@ -54,6 +58,24 @@
 
 		function load_languages() {
 			load_plugin_textdomain( 'gazchaps-woocommerce-getaddress-io', false, GC_WC_GAIO_DIR . 'lang' . DIRECTORY_SEPARATOR );
+		}
+
+		function load_database() {
+			$db_version = get_option( 'gazchaps_get_address_io_dbversion' );
+			if ( !$db_version || version_compare( $db_version, GazChap_WC_GetAddress_Plugin_Common::PLUGIN_VERSION, '<' ) ) {
+				GazChap_WC_GetAddress_Plugin_Database::install( $db_version );
+			}
+
+			// schedule a daily cron job to purge old records from the table
+			add_action( 'gazchaps_get_address_io_dbpurge', array( GazChap_WC_GetAddress_Plugin_Database::class, 'purge' ) );
+			if ( !wp_next_scheduled( 'gazchaps_get_address_io_dbpurge' ) ) {
+				wp_schedule_event( time(), 'daily', 'gazchaps_get_address_io_dbpurge' );
+			}
+
+		}
+
+		function deactivate() {
+			GazChap_WC_GetAddress_Plugin_Database::uninstall();
 		}
 
 		/**
