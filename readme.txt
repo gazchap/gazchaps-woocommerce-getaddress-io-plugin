@@ -7,7 +7,7 @@ Tested up to: 6.3
 WC tested up to: 8.1.1
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: trunk
+Stable tag: 3.0
 Donate link: https://ko-fi.com/gazchap
 
 Adds a UK postcode lookup tool into WooCommerce's checkout process.
