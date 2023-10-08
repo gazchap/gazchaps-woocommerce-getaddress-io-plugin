@@ -112,42 +112,6 @@
 			return $output;
 		}
 
-		/**
-		 * @return string
-		 */
-		public static function get_find_button_text() {
-			$text = __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_button_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_find_address_button_text' );
-			}
-
-			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-button-text', $text );
-		}
-
-		/**
-		 * @return string
-		 */
-		public static function get_searching_text() {
-			$text = __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_searching_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_find_address_searching_text' );
-			}
-
-			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-searching-text', $text );
-		}
-
-		/**
-		 * @return string
-		 */
-		public static function get_enter_address_manually_text() {
-			$text = __( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_enter_address_manually_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_enter_address_manually_text' );
-			}
-
-			return apply_filters( 'gazchaps-woocommerce-getaddress-io_enter-address-manually-text', $text );
-		}
-
 		public static function get_localize_js_options() {
 			$field_prefixes = [];
 			if ( 'no' != get_option( 'gazchaps_getaddress_io_enable_for_billing_address' ) ) {
@@ -161,9 +125,9 @@
 			return array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'clear_additional_fields' => apply_filters( 'gazchaps-woocommerce-getaddress-io_clear_additional_fields', true ),
-				'button_text' => self::get_find_button_text(),
-				'searching_text' => self::get_searching_text(),
-				'enter_address_manually_text' => self::get_enter_address_manually_text(),
+				'button_text' => GazChap_WC_GetAddress_Plugin_Settings::get_find_button_text(),
+				'searching_text' => GazChap_WC_GetAddress_Plugin_Settings::get_searching_text(),
+				'enter_address_manually_text' => GazChap_WC_GetAddress_Plugin_Settings::get_enter_address_manually_text(),
 				'hide_address_fields' => $hide_address_fields,
 				'fields_to_hide' => apply_filters( 'gazchaps-woocommerce-getaddress-io_hide-fields', [ 'address_1', 'address_2', 'city', 'state' ] ),
 				'field_prefixes' => $field_prefixes,

@@ -86,7 +86,7 @@
 				'id'        => 'gazchaps_getaddress_io_find_address_button_text',
 				'title'      => __( 'Find Address Button Text', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc_tip'      => __( 'Change the text on the Find Address buttons. If left blank, translations will work for "Find Address".', 'gazchaps-woocommerce-getaddress-io' ),
-				'placeholder' => __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => self::get_find_button_text(),
 				'type'      => 'text',
 			);
 
@@ -94,7 +94,7 @@
 				'id'        => 'gazchaps_getaddress_io_find_address_searching_text',
 				'title'      => __( 'Find Address Searching Text', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc_tip'      => __( 'Change the text shown on the button when a search is in progress. If left blank, translations will work for "Searching...".', 'gazchaps-woocommerce-getaddress-io' ),
-				'placeholder' => __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => self::get_searching_text(),
 				'type'      => 'text',
 			);
 
@@ -102,7 +102,7 @@
 				'id'        => 'gazchaps_getaddress_io_enter_address_manually_text',
 				'title'      => __( 'Enter Address Manually Text', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc_tip'      => __( 'Change the link text that is clicked to enter an address manually. If left blank, translations will work for "Enter an address manually".', 'gazchaps-woocommerce-getaddress-io' ),
-				'placeholder' => __( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' ),
+				'placeholder' => self::get_enter_address_manually_text(),
 				'type'      => 'text',
 			);
 
@@ -132,6 +132,41 @@
 			return $settings;
 		}
 
+		/**
+		 * @return string
+		 */
+		public static function get_find_button_text() {
+			$text = __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' );
+			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_button_text' ) ) ) {
+				$text = get_option( 'gazchaps_getaddress_io_find_address_button_text' );
+			}
+
+			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-button-text', $text );
+		}
+
+		/**
+		 * @return string
+		 */
+		public static function get_searching_text() {
+			$text = __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' );
+			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_searching_text' ) ) ) {
+				$text = get_option( 'gazchaps_getaddress_io_find_address_searching_text' );
+			}
+
+			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-searching-text', $text );
+		}
+
+		/**
+		 * @return string
+		 */
+		public static function get_enter_address_manually_text() {
+			$text = __( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' );
+			if ( !empty( get_option( 'gazchaps_getaddress_io_enter_address_manually_text' ) ) ) {
+				$text = get_option( 'gazchaps_getaddress_io_enter_address_manually_text' );
+			}
+
+			return apply_filters( 'gazchaps-woocommerce-getaddress-io_enter-address-manually-text', $text );
+		}
 	}
 
 	new GazChap_WC_GetAddress_Plugin_Settings();

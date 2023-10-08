@@ -158,7 +158,7 @@
 			// add postcode lookup button
 			$fields[ $type . 'gazchaps_getaddress_io_postcode_lookup_button'] = array(
 				'type' => 'gazchaps_getaddress_io_postcode_lookup_button',
-				'label' => GazChap_WC_GetAddress_Plugin_Common::get_find_button_text(),
+				'label' => GazChap_WC_GetAddress_Plugin_Settings::get_find_button_text(),
 				'class' => array(
 					'form-row-last',
 				),
@@ -169,7 +169,7 @@
 			if ( 'yes' == get_option( 'gazchaps_getaddress_io_hide_address_fields' ) && 'no' != get_option( 'gazchaps_getaddress_io_allow_manual_entry' ) ) {
 				$fields[ $type . 'gazchaps_getaddress_io_enter_address_manually_button'] = array(
 					'type' => 'gazchaps_getaddress_io_enter_address_manually_button',
-					'label' => GazChap_WC_GetAddress_Plugin_Common::get_enter_address_manually_text(),
+					'label' => GazChap_WC_GetAddress_Plugin_Settings::get_enter_address_manually_text(),
 					'class' => array(
 						'form-row-wide',
 					),
