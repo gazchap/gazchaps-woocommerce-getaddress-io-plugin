@@ -4,28 +4,21 @@
 	}
 
 	class GazChap_WC_GetAddress_Plugin_Settings {
-		const API_MODE_AUTO = 'auto';
-		const API_MODE_AUTOCOMPLETE = 'autocomplete';
-		const API_MODE_FIND = 'find';
-		const API_MODES = [
-			self::API_MODE_AUTO,
-			self::API_MODE_AUTOCOMPLETE,
-			self::API_MODE_FIND,
-		];
-		const API_MODE_DEFAULT = self::API_MODE_AUTO;
+		const SECTION_ID = 'gazchaps_getaddress_io';
 
 		public function __construct() {
 			add_filter( 'woocommerce_get_sections_general', array( $this, 'add_settings_section' ), 10, 1 );
 			add_filter( 'woocommerce_get_settings_general', array( $this, 'add_settings_to_section' ), 10, 2 );
+			add_action( 'woocommerce_update_options_general_' . self::SECTION_ID, array( $this, 'validate_api_keys' ), 10 );
 		}
 
 		public function add_settings_section( $sections ) {
-			$sections['gazchaps_getaddress_io'] = __( 'getAddress.io Settings', 'gazchaps-woocommerce-getaddress-io' );
+			$sections[self::SECTION_ID] = __( 'getAddress.io Settings', 'gazchaps-woocommerce-getaddress-io' );
 			return $sections;
 		}
 
 		public function add_settings_to_section( $settings, $section ) {
-			if ( 'gazchaps_getaddress_io' !== $section ) return $settings;
+			if ( self::SECTION_ID !== $section ) return $settings;
 
 			$new_settings = array();
 
@@ -56,18 +49,6 @@
 				'title'      => __( 'Administration Key', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc' => __( 'Optional, enables API usage chart.', 'gazchaps-woocommerce-getaddress-io' ),
 				'type'      => 'text',
-			);
-
-			$new_settings[] = array(
-				'id'       => 'gazchaps_getaddress_io_api_mode',
-				'title'     => __( 'API Mode', 'gazchaps-woocommerce-getaddress-io' ),
-				'type'     => 'radio',
-				'options' => array(
-					self::API_MODE_AUTO => __( 'Automatic (default)', 'gazchaps-woocommerce-getaddress-io' ),
-					self::API_MODE_AUTOCOMPLETE => __( 'Autocomplete (for new API keys)', 'gazchaps-woocommerce-getaddress-io' ),
-					self::API_MODE_FIND => __( 'Find (for older, legacy API keys)', 'gazchaps-woocommerce-getaddress-io' ),
-				),
-				'default' => self::API_MODE_DEFAULT,
 			);
 
 			$new_settings[] = array(
@@ -160,30 +141,34 @@
 			return $settings;
 		}
 
+		public function validate_api_keys() {
+
+		}
+
 		/**
 		 * @return string
 		 */
-		public static function get_api_mode() {
-			$mode = null;
-			if ( !empty( get_option( 'gazchaps_getaddress_io_api_mode' ) ) ) {
-				$mode = get_option( 'gazchaps_getaddress_io_api_mode' );
-			}
-			if ( !in_array( $mode, self::API_MODES ) ) {
-				$mode = self::API_MODE_DEFAULT;
-			}
+		public static function get_api_key() {
+			$key = get_option( 'gazchaps_getaddress_io_api_key', '' );
+			return $key;
+		}
 
-			return $mode;
+		/**
+		 * @return string
+		 */
+		public static function get_admin_key() {
+			$key = get_option( 'gazchaps_getaddress_io_admin_key', '' );
+			return $key;
 		}
 
 		/**
 		 * @return string
 		 */
 		public static function get_find_button_text() {
-			$text = __( 'Find Address', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_button_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_find_address_button_text' );
-			}
-
+			$text = get_option(
+				'gazchaps_getaddress_io_find_address_button_text',
+				__( 'Find Address', 'gazchaps-woocommerce-getaddress-io' )
+			);
 			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-button-text', $text );
 		}
 
@@ -191,11 +176,10 @@
 		 * @return string
 		 */
 		public static function get_searching_text() {
-			$text = __( 'Searching...', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_find_address_searching_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_find_address_searching_text' );
-			}
-
+			$text = get_option(
+				'gazchaps_getaddress_io_find_address_searching_text',
+				__( 'Searching...', 'gazchaps-woocommerce-getaddress-io' )
+			);
 			return apply_filters( 'gazchaps-woocommerce-getaddress-io_find-address-searching-text', $text );
 		}
 
@@ -203,11 +187,10 @@
 		 * @return string
 		 */
 		public static function get_enter_address_manually_text() {
-			$text = __( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' );
-			if ( !empty( get_option( 'gazchaps_getaddress_io_enter_address_manually_text' ) ) ) {
-				$text = get_option( 'gazchaps_getaddress_io_enter_address_manually_text' );
-			}
-
+			$text = get_option(
+				'gazchaps_getaddress_io_enter_address_manually_text',
+				__( 'Enter an address manually', 'gazchaps-woocommerce-getaddress-io' )
+			);
 			return apply_filters( 'gazchaps-woocommerce-getaddress-io_enter-address-manually-text', $text );
 		}
 	}
