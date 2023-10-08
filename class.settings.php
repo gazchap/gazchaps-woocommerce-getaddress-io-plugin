@@ -47,7 +47,14 @@
 
 			$new_settings[] = array(
 				'id'        => 'gazchaps_getaddress_io_api_key',
-				'title'      => __( 'API Key', 'gazchaps-woocommerce-getaddress-io' ),
+				'title'      => __( 'API Key/Domain Token', 'gazchaps-woocommerce-getaddress-io' ),
+				'type'      => 'text',
+			);
+
+			$new_settings[] = array(
+				'id'        => 'gazchaps_getaddress_io_admin_key',
+				'title'      => __( 'Administration Key', 'gazchaps-woocommerce-getaddress-io' ),
+				'desc' => __( 'Optional, enables API usage chart.', 'gazchaps-woocommerce-getaddress-io' ),
 				'type'      => 'text',
 			);
 
