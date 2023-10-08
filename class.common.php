@@ -40,7 +40,7 @@
 								$address_type . '_state' => $address->county,
 							);
 							$this_address['option'] = implode( "|", array_values( $address_lines ) );
-							$this_address['label'] = str_replace("|", ", ", preg_replace( "/\|+/", "|", $this_address['option'] ) );
+							$this_address['label'] = str_replace("|", ", ", preg_replace( "/\|+/", "|", trim( $this_address['option'], '|' ) ) );
 							$this_address['address'] = (array) $address;
 
 							$addresses[] = $this_address;
