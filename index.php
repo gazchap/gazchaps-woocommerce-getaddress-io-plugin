@@ -76,7 +76,7 @@
 			if ( !is_array( $links ) ) {
 				$links = array();
 			}
-			$links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=general' ) . '#gazchaps_getaddress_io_section_title-description">' . __( 'Settings', 'gazchaps-woocommerce-getaddress-io' ) . '</a>';
+			$links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=general&section=gazchaps_getaddress_io' ) . '">' . __( 'Settings', 'gazchaps-woocommerce-getaddress-io' ) . '</a>';
 			$links[] = '<a href="' . esc_attr( esc_url( GazChap_WC_GetAddress_Plugin_Common::DONATE_URL ) ) . '" target="_blank" rel="noopener noreferrer">' . __( 'Donate', 'gazchaps-woocommerce-getaddress-io' ) . '</a>';
 			return $links;
 		}

@@ -6,10 +6,18 @@
 	class GazChap_WC_GetAddress_Plugin_Settings {
 
 		public function __construct() {
-			add_filter( 'woocommerce_get_settings_general', array( $this, 'add_settings_to_section' ), 10, 1 );
+			add_filter( 'woocommerce_get_sections_general', array( $this, 'add_settings_section' ), 10, 1 );
+			add_filter( 'woocommerce_get_settings_general', array( $this, 'add_settings_to_section' ), 10, 2 );
 		}
 
-		public function add_settings_to_section( $settings ) {
+		public function add_settings_section( $sections ) {
+			$sections['gazchaps_getaddress_io'] = __( 'getAddress.io Settings', 'gazchaps-woocommerce-getaddress-io' );
+			return $sections;
+		}
+
+		public function add_settings_to_section( $settings, $section ) {
+			if ( 'gazchaps_getaddress_io' !== $section ) return $settings;
+
 			$new_settings = array();
 
 			$new_settings[] = array(
