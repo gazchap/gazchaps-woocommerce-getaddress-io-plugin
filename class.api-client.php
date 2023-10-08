@@ -37,25 +37,11 @@
 			return $results;
 		}
 
-		public static function usage_range( $from, $to ) {
-			if ( !is_a( $from, DateTime::class ) ) {
-				$from = new DateTime('@' . strtotime($from));
-			}
-			if ( !is_a( $to, DateTime::class ) ) {
-				$to = new DateTime('@' . strtotime($to));
-			}
-			$path = 'from/' . $from->format('j/n/Y') . '/To/' . $to->format('j/n/Y');
-
-			return self::request( 'usage', $path, array(), true );
-		}
-
-		private static function request( $endpoint, $path, $params = array(), $admin = false ) {
+		private static function request( $endpoint, $path, $params = array() ) {
 			$url = self::BASE_URL . $endpoint . '/' . $path;
 
 			if ( !is_array( $params ) ) $params = array();
-			$params['api-key'] = !$admin ?
-				GazChap_WC_GetAddress_Plugin_Settings::get_api_key() :
-				GazChap_WC_GetAddress_Plugin_Settings::get_admin_key();
+			$params['api-key'] = GazChap_WC_GetAddress_Plugin_Settings::get_api_key();
 			if ( empty( $params['api-key'] ) ) return false;
 
 			$url .= '?' . http_build_query( $params );

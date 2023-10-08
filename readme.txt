@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 6.2
-WC tested up to: 7.8.0
+Tested up to: 6.3
+WC tested up to: 8.1.1
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -70,7 +70,7 @@ All of these filters take one argument, `$text`.
 `gazchaps-woocommerce-getaddress-io_find-address-searching-text` - the text shown when the Find Address button is selected (default: Searching...)
 `gazchaps-woocommerce-getaddress-io_enter-address-manually-text` - the text shown for the "Enter an address manually" link (default: Enter an address manually)
 
-Note: Although these two texts are translateable, filters will override any translations.
+Note: Although these two texts are translatable, filters will override any translations.
 
 = Error Messages =
 
@@ -90,13 +90,13 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_shipping_selector_row_class` - changes the CSS class on the form-row that the shipping address selector is placed into
 `gazchaps-woocommerce-getaddress-io_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
 
-= Over Usage Email Notification =
-
-`gazchaps-woocommerce-getaddress-io_overusage_email_recipient` - change the recipient passed to wp_mail()
-`gazchaps-woocommerce-getaddress-io_overusage_email_subject` - change the subject line passed to wp_mail() for the over-usage email
-`gazchaps-woocommerce-getaddress-io_overusage_email_message` - change the message body passed to wp_mail() for the over-usage email
-
 == Changelog ==
+= 3.0 (XX/XX/2023) =
+
+* Rewritten to support the new getAddress.io API -- the API used previously is no longer available to new getAddress.io customers.
+* Removed ability to send an over-usage email, as getAddress.io now does this natively.
+* Moved settings to their own section (at the top) in the WooCommerce -> Settings -> General tab.
+
 = 2.3 (14/06/2023) =
 
 * Declared compatibility with WooCommerce High Performance Order Storage -- thanks benatherton for the information.

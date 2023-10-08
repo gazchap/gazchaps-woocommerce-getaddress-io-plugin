@@ -2,13 +2,13 @@
 /*
  * Plugin Name: GazChap's WooCommerce getAddress.io Postcode Lookup
  * Plugin URI: https://www.gazchap.com/posts/woocommerce-getaddress-io
- * Version: 2.3
+ * Version: 3.0
  * Author: Gareth 'GazChap' Griffiths
  * Author URI: https://www.gazchap.com
  * Description: Adds a UK postcode address lookup tool to the WooCommerce checkout process.
- * Tested up to: 6.2
+ * Tested up to: 6.3
  * WC requires at least: 3.0.0
- * WC tested up to: 7.8.0
+ * WC tested up to: 8.1.1
  * Text Domain: gazchaps-woocommerce-getaddress-io
  * Domain Path: /lang
  * License: GNU General Public License v2.0
@@ -41,6 +41,8 @@
 		}
 
 		function load_class() {
+			require GC_WC_GAIO_DIR . 'class.exception.php';
+			require GC_WC_GAIO_DIR . 'class.api-client.php';
 			require GC_WC_GAIO_DIR . 'class.common.php';
 			require GC_WC_GAIO_DIR . 'class.settings.php';
 			require GC_WC_GAIO_DIR . 'class.checkout.php';

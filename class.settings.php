@@ -43,13 +43,6 @@
 			);
 
 			$new_settings[] = array(
-				'id'        => 'gazchaps_getaddress_io_admin_key',
-				'title'      => __( 'Administration Key', 'gazchaps-woocommerce-getaddress-io' ),
-				'desc' => __( 'Optional, enables API usage chart.', 'gazchaps-woocommerce-getaddress-io' ),
-				'type'      => 'text',
-			);
-
-			$new_settings[] = array(
 				'id'        => 'gazchaps_getaddress_io_enable_for_billing_address',
 				'title'      => __( 'Enable for Billing Address', 'gazchaps-woocommerce-getaddress-io' ),
 				'desc'      => __( 'Add the lookup field to the Billing Address section in checkout and account areas', 'gazchaps-woocommerce-getaddress-io' ),
@@ -136,14 +129,6 @@
 		 */
 		public static function get_api_key() {
 			$key = get_option( 'gazchaps_getaddress_io_api_key', '' );
-			return $key;
-		}
-
-		/**
-		 * @return string
-		 */
-		public static function get_admin_key() {
-			$key = get_option( 'gazchaps_getaddress_io_admin_key', '' );
 			return $key;
 		}
 
