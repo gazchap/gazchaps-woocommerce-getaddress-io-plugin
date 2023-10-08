@@ -4,6 +4,15 @@
 	}
 
 	class GazChap_WC_GetAddress_Plugin_Settings {
+		const API_MODE_AUTO = 'auto';
+		const API_MODE_AUTOCOMPLETE = 'autocomplete';
+		const API_MODE_FIND = 'find';
+		const API_MODES = [
+			self::API_MODE_AUTO,
+			self::API_MODE_AUTOCOMPLETE,
+			self::API_MODE_FIND,
+		];
+		const API_MODE_DEFAULT = self::API_MODE_AUTO;
 
 		public function __construct() {
 			add_filter( 'woocommerce_get_sections_general', array( $this, 'add_settings_section' ), 10, 1 );
@@ -40,6 +49,18 @@
 				'id'        => 'gazchaps_getaddress_io_api_key',
 				'title'      => __( 'API Key', 'gazchaps-woocommerce-getaddress-io' ),
 				'type'      => 'text',
+			);
+
+			$new_settings[] = array(
+				'id'       => 'gazchaps_getaddress_io_api_mode',
+				'title'     => __( 'API Mode', 'gazchaps-woocommerce-getaddress-io' ),
+				'type'     => 'radio',
+				'options' => array(
+					self::API_MODE_AUTO => __( 'Automatic (default)', 'gazchaps-woocommerce-getaddress-io' ),
+					self::API_MODE_AUTOCOMPLETE => __( 'Autocomplete (for new API keys)', 'gazchaps-woocommerce-getaddress-io' ),
+					self::API_MODE_FIND => __( 'Find (for older, legacy API keys)', 'gazchaps-woocommerce-getaddress-io' ),
+				),
+				'default' => self::API_MODE_DEFAULT,
 			);
 
 			$new_settings[] = array(
@@ -130,6 +151,21 @@
 			$settings = array_merge( $settings, $new_settings );
 
 			return $settings;
+		}
+
+		/**
+		 * @return string
+		 */
+		public static function get_api_mode() {
+			$mode = null;
+			if ( !empty( get_option( 'gazchaps_getaddress_io_api_mode' ) ) ) {
+				$mode = get_option( 'gazchaps_getaddress_io_api_mode' );
+			}
+			if ( !in_array( $mode, self::API_MODES ) ) {
+				$mode = self::API_MODE_DEFAULT;
+			}
+
+			return $mode;
 		}
 
 		/**
