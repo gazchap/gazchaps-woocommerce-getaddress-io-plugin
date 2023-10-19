@@ -4,7 +4,6 @@
 
     function show_or_hide_address_fields( type, show_or_hide ) {
         if ( gazchaps_getaddress_io.hide_address_fields && gazchaps_getaddress_io.fields_to_hide && gazchaps_getaddress_io.field_prefixes ) {
-            var address_fields = gazchaps_getaddress_io.fields_to_hide || [];
             for ( var i in gazchaps_getaddress_io.field_prefixes ) {
                 var prefix = gazchaps_getaddress_io.field_prefixes[i];
                 if ( !type || prefix === type ) {
@@ -14,27 +13,28 @@
                     var country_field = prefix + '_country';
                     var countryElement = document.getElementById( country_field );
                     if ( countryElement ) {
-                        if ( ( countryElement.value && 'GB' == countryElement.value ) || ( countryElement.options && 'GB' == countryElement.options[ countryElement.selectedIndex ].value ) ) {
+                        if ( ( countryElement.value && 'GB' === countryElement.value ) || ( countryElement.options && 'GB' === countryElement.options[ countryElement.selectedIndex ].value ) ) {
                             is_gb = true;
                         }
                     }
 
                     var all_empty = true;
-                    for ( var j in gazchaps_getaddress_io.fields_to_hide ) {
-                        var field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
+                    var j, field;
+                    for ( j in gazchaps_getaddress_io.fields_to_hide ) {
+                        field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
                         var fieldElement = document.getElementById( field );
-                        if ( fieldElement && '' != fieldElement.value ) {
+                        if ( fieldElement && '' !== fieldElement.value ) {
                             all_empty = false;
                             break;
                         }
                     }
 
                     if ( ( all_empty && is_gb ) || 'show' === show_or_hide ) {
-                        for ( var j in gazchaps_getaddress_io.fields_to_hide ) {
-                            var field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
+                        for ( j in gazchaps_getaddress_io.fields_to_hide ) {
+                            field = prefix + '_' + gazchaps_getaddress_io.fields_to_hide[j];
                             var fieldContainer = document.getElementById( field + '_field' );
                             if ( fieldContainer ) {
-                                fieldContainer.style.display = ( 'hide' == show_or_hide ) ? 'none' : '';
+                                fieldContainer.style.display = ( 'hide' === show_or_hide ) ? 'none' : '';
                             }
                         }
                         if ( 'hide' === show_or_hide ) {
@@ -52,7 +52,7 @@
         var enter_manually_row_id = type + '_gazchaps_getaddress_io_enter_address_manually_button_field';
         var enter_manually_row = document.getElementById( enter_manually_row_id );
         if ( enter_manually_row ) {
-            enter_manually_row.style.display = ( 'hide' == show_or_hide ) ? 'none' : '';
+            enter_manually_row.style.display = ( 'hide' === show_or_hide ) ? 'none' : '';
         }
     }
 
@@ -100,7 +100,7 @@
     function do_postcode_lookup( postcode, address_type, btn ) {
         if ( typeof postcode_lookup_cache[ postcode + '_' + address_type ] != 'undefined' ) {
             tidy_postcode_field( postcode_lookup_cache[ postcode + '_' + address_type ] );
-            show_address_selector( postcode_lookup_cache[ postcode + '_' + address_type ] );
+            insert_address_selector_from_response( postcode_lookup_cache[ postcode + '_' + address_type ] );
             return;
         }
 
@@ -128,7 +128,7 @@
                 if ( !response.error_code ) {
                     postcode_lookup_cache[ postcode + '_' + address_type ] = response;
                     tidy_postcode_field( response );
-                    show_address_selector( response );
+                    insert_address_selector_from_response( response );
                 } else {
                     alert( response.error );
                 }
@@ -150,8 +150,12 @@
         }
     }
 
-    function show_address_selector( r ) {
-        var selector_form_row_id = r.address_type + '_gazchaps-woocommerce-getaddress-io-address-selector';
+    function get_selector_form_row_id( address_type ) {
+        return address_type + '_gazchaps-woocommerce-getaddress-io-address-selector';
+    }
+
+    function insert_address_selector_from_response( r ) {
+        var selector_form_row_id = get_selector_form_row_id( r.address_type );
         var selector_form_row = document.getElementById( selector_form_row_id );
 
         if ( selector_form_row ) {
@@ -166,6 +170,20 @@
                 jQuery( '#' + selector_form_row_id ).find('select').select2();
             }
         }
+    }
+
+    function show_address_selector( address_type ) {
+        var selector_form_row_id = get_selector_form_row_id( address_type );
+        var $selector_form_row = jQuery( '#' + selector_form_row_id );
+        $selector_form_row.find(':input').prop('disabled', false);
+        $selector_form_row.show();
+    }
+
+    function hide_address_selector( address_type ) {
+        var selector_form_row_id = get_selector_form_row_id( address_type );
+        var $selector_form_row = jQuery( '#' + selector_form_row_id );
+        $selector_form_row.hide();
+        $selector_form_row.find(':input').prop('disabled', true);
     }
 
     function do_address_change( src_id, address ) {
@@ -202,10 +220,21 @@
     // add event listeners for the selectors
     jQuery( document ).on( 'change', '#billing_gazchaps-woocommerce-getaddress-io-address-selector-select, #shipping_gazchaps-woocommerce-getaddress-io-address-selector-select', function (e) {
         var val = e.target.options[e.target.selectedIndex].value;
-        if ( '' == val ) {
+        if ( '' === val ) {
             val = '||||';
         }
         do_address_change( e.target.id, val );
+    } );
+
+    // add event listener to country fields to hide address selector if non-GB country is selected after a lookup
+    jQuery( document ).on( 'change', '#billing_country, #shipping_country', function(e) {
+        var type = ( 'billing_country' === this.id ) ? 'billing' : 'shipping';
+        var val = e.target.options[e.target.selectedIndex].value;
+        if ( 'GB' === val ) {
+            show_address_selector(type);
+        } else {
+            hide_address_selector(type);
+        }
     } );
 
     // add event listener to disable enter key on the postcode fields

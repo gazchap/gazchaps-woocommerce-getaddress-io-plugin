@@ -4,10 +4,10 @@ Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,uni
 Requires at least: 4.8.0
 Requires PHP: 5.6
 Tested up to: 6.3
-WC tested up to: 8.1.1
+WC tested up to: 8.2.1
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.0
+Stable tag: 3.1
 Donate link: https://ko-fi.com/gazchap
 
 Adds a UK postcode lookup tool into WooCommerce's checkout process.
@@ -81,6 +81,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
 
 == Changelog ==
+= 3.1 (19/10/2023) =
+
+* Bugfix - changing country to a non-UK country after performing a postcode lookup now hides the 'Select address' menu. Thanks to Conor for the report.
+
 = 3.0 (08/10/2023) =
 
 * Rewritten to support the new getAddress.io API -- the API used previously is no longer available to new getAddress.io customers.
