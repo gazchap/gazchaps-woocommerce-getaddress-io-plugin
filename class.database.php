@@ -5,6 +5,7 @@
 
 	class GazChap_WC_GetAddress_Plugin_Database {
 		private static $enabled = true;
+		const DBVERSION_OPTION_KEY = 'gazchaps_get_address_io_dbversion';
 
 		public static function enabled() {
 			return self::$enabled;
@@ -45,6 +46,7 @@
 			global $wpdb;
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			$charset_collate = $wpdb->get_charset_collate();
+			$update_version = null;
 
 			// 3.0
 			if ( !$version || version_compare( $version, '3.0', '<' ) ) {
@@ -56,19 +58,20 @@
 				) " . $charset_collate . ";";
 
 				$result = dbDelta($sql);
-				if ( stristr( $result[$wpdb->prefix . 'gazchaps_getaddress_io'], 'created table' ) ) {
+				if ( isset( $result[$wpdb->prefix . 'gazchaps_getaddress_io'] ) && stristr( $result[$wpdb->prefix . 'gazchaps_getaddress_io'], 'created table' ) ) {
 					$update_version = '3.0';
 				} else {
 					self::disable();
 				}
 			}
-
-			update_option( 'gazchaps_get_address_io_dbversion', $update_version );
+			if ( $update_version ) {
+				update_option( self::DBVERSION_OPTION_KEY, $update_version );
+			}
 		}
 
 		public static function uninstall() {
 			global $wpdb;
-			delete_option( 'gazchaps_get_address_io_dbversion' );
+			delete_option( self::DBVERSION_OPTION_KEY );
 			$wpdb->query( "DROP TABLE IF EXISTS " . self::table() );
 		}
 
