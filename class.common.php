@@ -4,7 +4,7 @@
 	}
 
 	class GazChap_WC_GetAddress_Plugin_Common {
-		const PLUGIN_VERSION = '3.2';
+		const PLUGIN_VERSION = '3.2.1';
 		const DONATE_URL = 'https://ko-fi.com/gazchap';
 
 		public static function lookup_postcode( $postcode, $address_type = 'billing' ) {
@@ -55,7 +55,7 @@
 						);
 					} catch ( GazChap_WC_GetAddress_Plugin_Exception $exception ) {
 						$output = array(
-							'error_code' => $exception->getCode()
+							'error_code' => $exception->getCode(),
 						);
 						switch( $exception->getCode() ) {
 							case 401:
@@ -70,13 +70,16 @@
 							case 500:
 								$output['error'] = __('Server error. Please try again later.', 'gazchaps-woocommerce-getaddress-io' );
 								break;
+
+							default:
+								$output['error'] = __('An unknown error occurred. Please try again later.', 'gazchaps-woocommerce-getaddress-io');
 						}
 					}
 				}
 			}
 			if ( empty( $output ) ) {
 				$output = array(
-					'error' =>__('No postcode was supplied.', 'gazchaps-woocommerce-getaddress-io' ),
+					'error' => __('No postcode was supplied.', 'gazchaps-woocommerce-getaddress-io' ),
 					'error_code' => 400,
 				);
 			}
