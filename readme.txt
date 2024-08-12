@@ -3,8 +3,8 @@ Contributors: gazchap
 Tags: woocommerce,ecommerce,address lookup,postcode lookup,uk address lookup,united kingdom,great britain,england,scotland,wales
 Requires at least: 4.8.0
 Requires PHP: 5.6
-Tested up to: 6.5
-WC tested up to: 8.7.0
+Tested up to: 6.6.1
+WC tested up to: 9.1.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: 3.2.1
@@ -27,6 +27,8 @@ Postcodes that are looked up are saved in a custom database table for 24 hours t
 
 [WooCommerce](https://woocommerce.com), at least version 3.0.
 [getAddress.io API Key](https://getaddress.io). A number of pricing plans are available.
+
+**Note:** Currently, this plugin does NOT support WooCommerce Checkout Blocks introduced as the default checkout experience in WooCommerce version 8.3, it can only be used with the WooCommerce checkout shortcode. I aim to make this plugin compatible with Checkout Blocks as soon as possible.
 
 == Installation ==
 
