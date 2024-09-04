@@ -7,7 +7,7 @@ Tested up to: 6.6.1
 WC tested up to: 9.1.0
 License: GNU General Public License v2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 Donate link: https://ko-fi.com/gazchap
 
 Adds a UK postcode lookup tool into WooCommerce's checkout process.
@@ -83,6 +83,10 @@ Note: By default, the error messages are "customer friendly", i.e. they don't go
 `gazchaps-woocommerce-getaddress-io_clear_additional_fields` - defaults to true, set to '__return_false' to stop the "additional fields" area of the checkout having a clear style applied to it
 
 == Changelog ==
+= 3.2.2 (04/09/2024) =
+
+* Bugfix - fixed a PHP warning being generated when a lookup fails with a WP_Error. Thanks to jhmaths for the report.
+
 = 3.2.1 (16/04/2024) =
 
 * Bugfix - fixed a PHP warning being generated when errors occurred. Thanks to connectisl for the report.

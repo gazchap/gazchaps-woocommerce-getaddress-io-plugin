@@ -51,10 +51,14 @@
 
 			$url .= '?' . http_build_query( $params );
 			$response = wp_remote_get( $url );
-			if ( 200 == $response['response']['code'] ) {
-				return $response;
+			if ( !is_wp_error( $response ) ) {
+				if ( 200 == $response['response']['code'] ) {
+					return $response;
+				} else {
+					throw new GazChap_WC_GetAddress_Plugin_Exception( $response, $response['response']['message'], $response['response']['code'] );
+				}
 			} else {
-				throw new GazChap_WC_GetAddress_Plugin_Exception( $response, $response['response']['message'], $response['response']['code'] );
+				throw new GazChap_WC_GetAddress_Plugin_Exception( $response, $response->get_error_message(), $response->get_error_code() );
 			}
 		}
 
